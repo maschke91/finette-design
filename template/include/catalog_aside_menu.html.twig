@@ -1,0 +1,32 @@
+<div class="aside__block">
+  <span class="aside__block-heading">
+    {# <span class="svg__container aside__block-icon">
+      <svg class="svg__icon svg__content">
+        <use xlink:href="/assets/img/svg/svg.svg#apps" x="0" y="0" width="100%" height="100%" />
+      </svg>
+    </span> #}
+    Katalog
+  </span>
+  <nav class="navigation vertical-navigation">
+    {% for id, category in categories %}
+      <a href="/catalog/category/{{ id }}">{{ category.name }}</a>
+    {% endfor %}
+  </nav>
+</div>
+{% if role != 2 %} 
+<div class="aside__block">
+  <span class="aside__block-heading">
+   {#  <span class="svg__container aside__block-icon">
+      <svg class="svg__icon svg__content">
+        <use xlink:href="/assets/img/svg/svg.svg#label" x="0" y="0" width="100%" height="100%" />
+      </svg>
+    </span> #}
+    Štítky
+  </span>
+  <nav class="navigation vertical-navigation">
+    {% for id, label in labels %}
+        <a href="/catalog/label/{{ id }}">{{ label.name }}</a>
+    {% endfor %}
+  </nav>
+</div>
+{% endif %}

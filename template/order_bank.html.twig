@@ -1,0 +1,44 @@
+{% extends 'layout/menu.html.twig' %}
+
+{% import 'macro/form.html.twig' as form %}
+
+{% block content %}
+<section class="page__content bg-white box__shadow">
+{% include "include/order_nav.html.twig" %}
+  <div class="px-4 text-center">
+    <div class="d-block d-md-flex flex-justify px-4 pb-3">
+      <div class="mb-4 mb-md-0">
+        {% for bank in banks %}
+        <button data-bank data-value="{{ bank.id }}" class="btn">{{ bank.name }}</button>
+        {% endfor %}
+      </div>
+      {% if banks is not empty %}
+      <div>
+        <button data-bank data-value="" class="btn btn-colored primary-bg">Nový</button>
+      </div>
+      {% endif %}
+    </div>
+    <form class="full-width text-left" action="/order/ajax_bank" data-name="order_bank">
+      {{ include('include/bank_detail.html.twig') }}
+      <div class="form__button-wrap button-wrap-horizontal">
+        {{ form.hidden('id', id) }}
+        {{ form.submit('Potvrdit', 'Potvrzuji...') }}
+      </div>
+    </form>
+  </div>
+</section>
+{# <h1>Objednávka</h1>
+  <h2>Bankovní účet</h2>
+  <select>
+    <option data-bank data-value="">( nový )</option>
+    {% for bank in banks %}
+    <option data-bank data-value="{{ bank.id }}">{{ bank.name }}</option>
+    {% endfor %}
+  </select>
+  <form action="/order/ajax_bank" data-name="order_bank">
+    {{ include('include/bank_detail.html.twig') }}
+    {{ form.hidden('id', id) }}
+    {{ form.submit('Potvrdit', 'Potvrzuji...') }}
+  </form> #}
+  {% endblock %}
+  

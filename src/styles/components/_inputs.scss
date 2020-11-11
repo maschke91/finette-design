@@ -1,0 +1,573 @@
+// Form inputs
+%basic-input-format {
+	width: 100%;
+	border: none;
+	font-size: 16px;
+	font-family: $primary-font-family;
+	font-weight: $primary-font-weight;
+	line-height: $primary-line-height;
+	margin: 0;
+	padding: 8px 0;
+	background: 0 0;
+	text-align: left;
+	color: $secondary-color;
+}
+
+textarea:focus,
+input:focus {
+	outline: 0;
+}
+.form__input-wrap {
+	position: relative;
+	display: flex !important;
+	flex-direction: row;
+	width: 100%;
+	padding-top: 16px;
+	margin-bottom: 16px;
+	
+	&.no-border-wrap {
+		border-bottom-color: transparent;
+	}
+	
+	&.hidden__input {
+		width: 0;
+		min-width: 0;
+		height: 0;
+		margin: 0;
+		padding: 0;
+		z-index: -1;
+		
+		.form__input-label {
+			height: 0;
+		}
+	}
+	
+	&.full-width {
+		max-width: 100%;
+		width: 100%
+	}
+	
+	/* WTF PARENT */
+	.full-width-input &
+	{
+		max-width: 100%
+	}
+	
+	@media screen and (min-width: $sm) {
+		max-width: 250px;
+		
+		&.full-width {
+			max-width: 100%;
+			width: 100%
+		}
+	}
+}
+
+.form__input {
+	@extend %basic-input-format;
+	border-bottom: 1px solid $grey-light;
+	@include transition(321ms);
+	
+	&:hover {
+		border-bottom-color: $secondary-color;
+	}
+	&:-webkit-autofill{
+		-webkit-text-fill-color: $secondary-color;
+	}
+	
+	&[disabled] {
+		border-bottom-style: dashed;
+		border-bottom-color: rgba(0,0,0,.30);
+		color: rgba(0,0,0,.30) !important;
+		cursor: not-allowed ;
+
+		@include placeholder {
+			color: $grey;
+		}
+		
+		&.bad-value,
+		&:hover {
+			border-bottom-color: $grey-light;
+		}
+		
+		& ~ .form__input-label {
+			cursor: not-allowed ;
+			color: rgba(0,0,0,.30) !important;
+		}
+		
+		&:not([type=file]).has-value~label
+		{
+			color: $grey-light;
+		}
+		&.has-value ~ .form__input-icon svg {
+			fill:$grey-light;
+		}
+		&:-webkit-autofill{
+			-webkit-text-fill-color: $grey-light;
+		}
+	}
+}
+.form__input-label {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	height: 37px;
+	line-height: 37px;
+	padding-left: 0;
+	color: $primary-grey;
+	margin-bottom: 0;
+	text-align: left;
+	transition: all 321ms ease-in-out;
+}
+.form__input-status:after {
+	content: '';
+	height: 2px;
+	left: 45%;
+	position: absolute;
+	bottom: 0;
+	transition-duration: .2s;
+	transition-timing-function: cubic-bezier(.4,0,.2,1);
+	visibility: hidden;
+	background-color: $secondary-color;
+	width: 10px;
+}
+
+.form__input:not([type='checkbox']):not([type='radio']):focus ~ label,
+.form__input:not([type='file']).has-value ~ label,
+.textarea:focus ~ label {
+	font-size: 12px;
+	color: $secondary-color;
+	-moz-transform: translateY(-24px);
+	-webkit-transform: translateY(-24px);
+	-o-transform: translateY(-24px);
+	-ms-transform: translateY(-24px);
+	transform: translateY(-24px);
+	transition-duration: .2s;
+	transition-timing-function: cubic-bezier(.4,0,.2,1);
+}
+.form__input:focus ~ .form__input-status:after {
+	left: 0;
+	visibility: visible;
+	width: 100%;
+}
+
+// With icons
+.form__input-icon {
+	width: 20px;
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	margin-right: 4px;
+	color: $primary-grey;
+	
+	&:before{
+		padding-bottom: 100%
+	}
+}
+
+.input-with-icon {
+	.form__input {
+		padding-left: 25px;
+	}
+}
+
+.form__input-icon ~ .form__input-label {
+	padding-left: 28px
+}
+.form__input.has-value ~ .form__input-icon svg,
+.form__input:focus ~ .form__input-icon svg{
+	fill: $secondary-color;
+}
+
+// Bad values
+.bad-value ~ .form__input-status:after
+{
+	background-color: $error-color;
+}
+.form__input.bad-value {
+	border-bottom-color: rgba($error-color, .5);
+}
+
+// Textarea
+textarea {
+	width: 100%;
+	resize: none;
+	
+	&.form__input {
+		min-height: 150px;
+		
+		& ~ .form__input-label {
+			top: 16px;
+			bottom: auto;
+		}
+	} 
+}
+
+// Checkbox & Radiobutton
+.form__input-checkbox {
+	max-width: 100%;
+}
+.form__input[type="checkbox"],
+.form__input[type="radio"] {
+	width: 1px;
+	height: 1px;
+	opacity: 0;
+	display: none;
+	position: absolute;
+	left: 0;
+	top: 0
+}
+.form__checkbox-label {
+	@extend %basic-input-format;
+	line-height: 1.15;
+}
+.form__radio-label,
+.form__checkbox-label
+{
+	padding-left: 35px;
+}
+.form__radio-label:before,
+.form__checkbox-label:before
+{
+	content: '';
+	display: block;
+	position: absolute;
+	left: 0;
+	z-index: 3;
+	top: 23px;
+	width: 20px;
+	height: 20px;
+	border: 1px solid rgba($secondary-color, .5);
+	transition: all 321ms ease-in-out;
+}
+.form__radio-label:before {
+	top: 24px;
+}
+.form__radio-label:hover:before,
+.form__checkbox-label:hover:before {
+	border-color: rgba($secondary-color, 1);
+}
+input[type="radio"]:checked + .form__radio-label:before,
+input[type="checkbox"]:checked + .form__checkbox-label:before,
+input[type="checkbox"]:indeterminate + .form__checkbox-label:before{
+	border-color: $secondary-color;
+}
+.form__radio-label + svg,
+.form__checkbox-label ~ .checkbox__state-checked,
+.form__checkbox-label ~ .checkbox__state-indeterminate {
+	position: absolute;
+	left: 4px;
+	top: 21px;
+	display: block;
+	width: 12px;
+	font-size: 12px;
+	text-align: center;
+	opacity: 0;
+	@include transition(321ms);
+	fill: $secondary-color;
+}
+.form__radio-label + svg {
+	top: 28px;
+}
+.form__input[type="radio"]:checked ~ svg,
+.form__input[type="checkbox"]:checked ~ .checkbox__state-checked,
+.form__input[type="checkbox"]:indeterminate ~ .checkbox__state-indeterminate {
+	opacity: 1;
+}
+// Disabled state 
+.form__input[type="checkbox"][disabled]{
+	& ~ .form__checkbox-label {
+		color: $primary-grey;
+		cursor: default;
+		pointer-events: none;
+		
+		&:before {
+			border-color: $primary-grey;
+		}
+	}
+	
+	& ~ svg {
+		fill: $primary-grey;
+	}
+}
+
+// Radio
+.form__radio-label {
+	@extend %basic-input-format;
+}
+.form__radio-label:before {
+	border-radius: 50% 50%;
+}
+.form__radio-label + svg {
+	width: 12px;
+	font-size: 12px;
+	bottom: 13px;
+	left: 4px;
+}
+/* Disabled state */
+.form__input[type="radio"][disabled]{
+	& ~ .form__radio-label {
+		color: $primary-grey;
+		cursor: default;
+		pointer-events: none;
+		
+		&:before {
+			border-color: $primary-grey;
+		}
+	}
+	
+	& ~ svg {
+		fill: $primary-grey;
+	}
+}
+
+// Ripple effect
+input[type="checkbox"].form__input:checked ~ .form__checkbox-label::after,
+input[type="radio"].form__input:checked ~ .form__radio-label::after {
+	animation: input-ripple 1s;
+	background: $secondary-color;
+	content: '';
+	display: block;
+	position: absolute;
+	width: 12px;
+	height: 12px;
+	top: 27px;
+	left: 4px;
+	z-index: 100;
+	opacity: 0;
+}
+.form__radio-label::after { 
+	top: 28px !important;
+	border-radius: 50%;
+}
+
+// Animation
+@keyframes 
+input-ripple { 
+	0% {
+		width: 12px;
+		height: 12px;
+		opacity: 0.35;
+	}
+	100% {
+		width: 40px;
+		height: 40px;
+		transform: translateX(-14px) translateY(-14px);
+		opacity: 0.0;
+	}
+}
+
+// File Input
+.form__input[type="file"] {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	opacity: 0;
+	margin: 0;
+	padding: 0;
+	visibility: hidden;
+	left: 0;
+	top: 0;
+}
+.form__input[type="file"] ~ .form__input-label {
+	display: block;
+	position: static;
+	width: 100%;
+	border-bottom: 1px solid $grey-light;
+	@include transition(321ms);
+	
+	&:hover {
+		border-bottom-color: $secondary-color;
+	}
+} 
+.form__input[type="file"] ~ .form__input-icon {
+	top: 3px;
+	bottom: auto;
+	
+	&:before {
+		padding-bottom: 50%;
+	}
+}
+.file-delete-button .svg__container {
+	width: 20px;
+}
+
+// Error messages
+.error__msg-wrap {
+	position: absolute;
+	display: none;
+	bottom: 62%;
+	right: 0;
+	font-size: 12px;
+	border: 1px solid #f4f4f4;
+	padding: 4px 8px;
+	background-color: $error-color;
+	color: #fff;
+	
+	&:after {
+		top: 100%;
+		left: auto;
+		right: 20px;
+		border: solid transparent;
+		content: " ";
+		height: 0;
+		width: 0;
+		position: absolute;
+		pointer-events: none;
+		border-color: rgba(138,72,213,0);
+		border-top-color: $error-color;
+		border-width: 6px;
+		margin-left: -6px;
+	}
+}
+
+// Select
+[data-options] {
+	display: none;
+}
+.select__arrow {
+	display: block;
+	width: 18px;
+	position: absolute;
+	right: 6px;
+	bottom: 8px;
+	@include transition(321ms);
+	
+	svg {
+		fill: $primary-grey;
+	}
+}
+
+.select__hidden-input[disabled]
+{
+	& + .form__input {
+		border-bottom-style: dashed;
+		border-bottom-color: $grey-light;
+		color: rgba(0,0,0,.12) !important;
+		@include placeholder {
+			color: $grey-light;
+		}
+	}
+	
+	& ~ * {
+		cursor: default;
+		user-select: none;
+		-webkit-touch-callout: none;
+	}
+}
+
+[data-view] {
+	cursor: pointer;
+}
+
+.form__input-label:focus ~ .select__arrow,
+.select__input:focus ~ .select__arrow {
+	transform: scale(1,-1);
+	
+	svg {
+		fill: $secondary-color;
+	}
+}
+
+.select__list-wrap {
+	position: absolute;
+	z-index: 1340;
+	max-height: 200px;
+	overflow: auto;
+	top: 100%;
+	list-style: none;
+	background-color: #fff;
+	width: 100%;
+	padding: 0;
+	text-align: left;
+	border: 1px solid rgba($grey, .2);
+	
+	.select__list-item {
+		padding: 8px 6px;
+		font-size: 15px;
+		font-weight: 300;
+		border-bottom: 1px solid rgba($grey, .2);
+		cursor: pointer;
+		@include transition(321ms);
+		
+		&[selected] {
+			background-color: rgba($grey, .05);
+			background-image: url('/assets/img/svg/svg.svg#done');
+			background-position: right center
+		}
+		
+		&:last-child {
+			border-bottom: none;
+		}
+		
+		&:hover {
+			background-color: rgba($grey, .2);
+		}
+	}
+}
+
+// Chrome autocomplete background setting
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+	/* border: 1px solid #f4f4f4; */
+	background-color: #fff;
+	/*  box-shadow: 0 0 0px 1000px #fff inset;
+	-webkit-box-shadow: 0 0 0px 1000px #fff inset; */
+	transition: background-color 5000s ease-in-out 0s;
+}
+
+// File Input
+[data-file-delete] {
+  display: none;
+  @include transition(321ms);
+
+  &.visible {
+    display: block;
+  }
+}
+.form__input[type="file"] {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  margin: 0;
+  padding: 0;
+  visibility: hidden;
+  left: 0;
+  top: 0;
+}
+
+.form__input[type="file"] ~ .form__input-label {
+  position: static;
+	display: block;
+	font-size: 16px;
+  width: 100%;
+  overflow: hidden;
+  border-bottom: 1px solid $grey-light;
+  @include transition(321ms);
+
+  &:hover {
+    border-bottom-color: $secondary-color;
+  }
+}
+
+.form__input[type="file"] ~ .form__input-icon {
+  bottom: 4px;
+  top: auto;
+
+  &:before {
+    padding-bottom: 50%;
+  }
+}
+
+.file-delete-button .svg__container {
+  width: 20px;
+}

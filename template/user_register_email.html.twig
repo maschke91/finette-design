@@ -1,0 +1,57 @@
+{% extends 'layout/no_menu.html.twig' %}
+
+{% import 'macro/form.html.twig' as form %}
+
+{% block content %}
+<section class="layout__box-wrap">
+  <div class="layout__box-content">
+    <div class="layout__box-img">
+      <img src="/assets/img/logo{{ subdom }}.svg" alt="Finettte s.r.o." />
+    </div>
+    <h2 class="layout__box-title">Registrace</h2>
+    <form action="/user/ajax_register_email" data-name="user_register_email" novalidate>
+      {{ form.input('E-Mail', 'email', [{
+        'type' : 'empty',
+        'text' : 'Musíte vyplnit e-mail'
+      }, {
+        'type' : 'format',
+        'text' : 'Špatný formát e-mailu'
+      }, {
+        'type' : 'valid',
+        'text' : 'Tento e-mail je již registrován'
+      }], null, 'email', false, 'email') }}
+      {# {{ form.checkbox('Souhlasím s obchodními podmínkami', 'vop', [{
+        'type' : 'empty',
+        'text' : 'Musíte souhlasit s podmínkami'
+			}]) }}   #}
+			<div class="form__input-wrap form__input-checkbox no-border-wrap">
+					<input type="checkbox" name="vop" id="vop" class="form__input">
+					<label class="form__checkbox-label" for="vop"><a href="/file/download/37/open" title="Obchodní podmínky" target="_blank">Souhlasím s obchodními podmínkami</a></label>
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="checkbox__state-checked"><path d="M9 21.035l-9-8.638 2.791-2.87 6.156 5.874 12.21-12.436 2.843 2.817z"></path></svg>
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="checkbox__state-indeterminate"><path d="M0 10h24v4h-24z"></path></svg>
+					<span data-validate="" data-invalid-vop="empty" class="error__msg-wrap" style="display: none;">Musíte souhlasit s podmínkami</span>
+				</div>
+      <div class="form__button-wrap button-wrap-vertical">
+        {{ form.hidden('token', token) }}
+        {{ form.submit('Pokračovat', 'Pokračuji...') }}
+      </div>
+    </form>
+  </div>
+</section>
+{% endblock %}
+{# <h1>Registrace</h1>
+  <form action="/user/ajax_register_email" data-name="user_register_email" novalidate>
+    {{ form.input('E-Mail', 'email', [{
+      'type' : 'empty',
+      'text' : 'Musíte vyplnit e-mail'
+    }, {
+      'type' : 'format',
+      'text' : 'Špatný formát e-mailu'
+    }, {
+      'type' : 'valid',
+      'text' : 'Tento e-mail je již registrován'
+    }], null, 'email') }}
+    <br />
+    {{ form.hidden('token', token) }}
+    {{ form.submit('Pokračovat', 'Pokračuji...') }}
+  </form> #}

@@ -1,0 +1,48 @@
+{% import 'macro/form.html.twig' as form %}
+
+<div class="prompt__content-wrap" data-prompt="{{ name }}">
+  <div class="prompt__content-heading">
+    <span class="prompt__title">Ověření</span>
+  </div>
+  <div class="prompt__text-wrap">
+      <p>Zadejte ověřovací kód zaslaný na <strong>{{ target }}</strong>:</p>
+      <form action="{{ action }}" data-name="{{ name }}" novalidate class="prompt__form">
+        {{ form.input('Ověřovací kód', 'code', [{
+          'type' : 'empty',
+          'text' : 'Musíte vyplnit ověřovací kód'
+        }, {
+          'type' : 'format',
+          'text' : 'Špatný formát ověřovacího kódu'
+        }, {
+          'type' : 'valid',
+          'text' : 'Nesprávný ověřovací kód'
+        }], null, null, false) }}
+        <div>
+        {{ form.hidden('token', token) }}
+        {{ form.submit('Ověřit', 'Ověřuji...') }}
+        </div>
+      </form>
+  </div>
+  <div class="prompt__content-footer">
+    <a href="#" data-prompt="close" title="Zrušit" class="btn full-with btn full-with d-block">Zrušit</a>
+  </div>
+</div>
+
+{# <h3></h3>
+<p>Zadejte ověřovací kód zaslaný na <strong>{{ target }}</strong>:</p>
+<form action="{{ action }}" data-name="{{ name }}" novalidate>
+  {{ form.input('Ověřovací kód', 'code', [{
+    'type' : 'empty',
+    'text' : 'Musíte vyplnit ověřovací kód'
+  }, {
+    'type' : 'format',
+    'text' : 'Špatný formát ověřovacího kódu'
+  }, {
+    'type' : 'valid',
+    'text' : 'Nesprávný ověřovací kód'
+  }]) }}
+  <br />
+  {{ form.hidden('token', token) }}
+  {{ form.submit('Ověřit', 'Ověřuji...') }}
+  <a href="#" data-prompt="close">Zrušit</a>
+</form> #}

@@ -1,0 +1,10 @@
+{% set timestamp = 'now'|date('YmdHis', 'Europe/Paris') %}
+
+<script type="text/javascript" src="/assets/js/lib/jquery-3.3.1.min.js?{{ timestamp }}"></script>
+<script type="text/javascript" src="/assets/js/vendor.min.js"></script>
+
+{% for script in page.js %}
+<script type="text/javascript" src="/assets/js/{{ script }}.js?{{ timestamp }}"></script>
+{% endfor %}
+
+<script type="text/javascript" src="/assets/js/main.js"></script>

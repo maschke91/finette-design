@@ -1,0 +1,67 @@
+// Modal common styles
+.modal__overlay {
+  @extend %common-overlay-classes;
+  z-index: 1337;
+  background: rgba(0, 0, 0, .47);
+  opacity: 1;
+  display: none;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-content: stretch;
+  align-items: center;
+  justify-content: center;
+
+  &.modal-open {
+    display: flex;
+  }
+}
+.modal__content-wrap {
+  position: relative;
+  z-index: 1338;
+  max-width: 95vw;
+  min-width: 300px;
+  background-color: #fff;
+  @extend %common-shadow;
+
+  @media screen and (min-width: $md) {
+    max-width: 40vw;
+  }
+
+  form {
+    width: 100%;
+  }
+
+  .Modal-rowItem {
+    min-width: 114px;
+  }
+}
+.modal__content-heading {
+  border-bottom: 1px solid $grey-light;
+  padding: 16px 20px;
+}
+.modal__content-title {
+  font-size: 20px;
+  font-weight: 400;
+}
+.modal__content-text {
+  padding: 8px 20px;
+  max-height: 60vh;
+
+  p {
+    margin: 0;
+    padding-bottom: 0;
+
+    &:first-child {
+      padding-top: 0;
+    }
+  }
+
+  &.overflow-auto {
+    overflow: auto;
+  }
+}
+.modal__content-footer {
+  border-top: 1px solid $grey-light;
+  padding: 16px 20px;
+  text-align: right;
+}

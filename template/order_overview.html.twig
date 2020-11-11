@@ -1,0 +1,288 @@
+{% extends 'layout/menu.html.twig' %}
+
+{% import 'macro/form.html.twig' as form %}
+
+{#{% set statuses = {
+	0: 'Neuhrazeno',
+	1: 'Zrušeno',
+	2: 'Částečně uhrazeno',
+	3: 'Uhrazeno',
+	4: 'Odesláno',
+	5: 'Přijato'
+} %} #}
+
+{# V pripade pridani stavu nutno editovat _colors.scss $color-states #}
+
+{% set statuses = [
+	{
+		'title': 'Neuhrazeno',
+		'state': '0'
+	},
+	{
+		'title': 'Zrušeno',
+		'state': '1'
+	},
+	{
+		'title': 'Částečně uhrazeno',
+		'state': '2'
+	},
+	{
+		'title': 'Uhrazeno',
+		'state': '3'
+	},
+	{
+		'title': 'Odesláno',
+		'state': '4'
+	},
+	{
+		'title': 'Přijato',
+		'state': '5'
+	}
+] %}
+
+{% block content %}
+<section class="page__content bg-white box__shadow">
+	<div class="breadcrumbs__wrap">
+		<span class="breadcrumbs__item">Objednávky</span>
+	</div>
+	<div class="section">
+		<div class="js-table-wrapper">
+				<table class="table responsive-table">
+					<thead>
+						<tr>
+							<th>Datum objednání</th>
+							<th>Zákazník</th>
+							<th>Produkt</th>
+							<th>Ks</th>
+							<th>Cena</th>
+							<th>Datum platby</th>
+							<th>Stav</th>
+							<th>Datum stavu</th>
+							<th>Pozn.</th>
+							<!-- <th>Platné od</th> -->
+							<!-- <th>Platné do</th> -->
+							<th class="text-right">
+								{% if role in [2, 4] %}
+								<button class="btn btn-icon btn-rounded js-filter" data-content-next="" role="button">
+									<span class="svg__container">
+										<svg class="svg__icon svg__content">
+											<use height="100%" width="100%" x="0" xlink:href="/assets/img/svg/svg.svg#filter_list" y="0"></use>
+										</svg>
+									</span>
+								</button>
+								{% endif %}
+							</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for item in items %}
+						<tr>
+							<td data-label="Datum objednání">{{ item.timestamp }}</td>
+							<td data-label="Zákazník" class="td-long-text">{{ item.customer }}</td>
+							<td data-label="Produkt" class="td-long-text">
+								<a href="/catalog/detail/{{ item.product_id }}" title="{{ products[item.product_id].name }}" target="_blank">{{ products[item.product_id].name }}</a>
+							</td>
+							<td data-label="Ks">{{ item.pcs }}</td>
+							<td data-label="Cena">{{ item.price|number_format(2, ',', '.') }} {{ currencies[item.currency_id].abbreviation }}</td>
+							<td data-label="Datum platby">{{ item.payment_date ?? item.paid_date ?? '-' }}</td>
+							{#<td data-label="Stav"><span class="order__status state-{{ statuses[item.status].state }}">{{ statuses[item.status].title }} </span>{% if item.status in [2, 3] %} ({{ item.amount|number_format(2, ',', '.') }} {{ currencies[item.currency_id].abbreviation }}){% endif %}</td>#}
+							<td data-label="Stav"><span class="order__status state-{{ statuses[item.status].state }}">{{ statuses[item.status].title }} </span></td>
+							<td data-label="Datum stavu">
+								{% if item.status == 0 %}
+									{{ item.term_date }}
+								{% elseif item.status in [2, 3] %}
+									{{ item.paid_date ?? item.payment_date }}
+								{% elseif item.status == 4 %}
+									{{ item.sent_date }}
+								{% elseif item.status == 5 %}
+									{{ item.receive_date }}
+								{% else %}
+								  -
+								{% endif %}
+							</td>
+							{#<td data-label="Platné od">{{ item.valid_from_date ?? '-' }}</td>#}
+							{#<td data-label="Platné do">{{ item.valid_to_date ?? '-' }}</td>#}
+							<td data-label="Pozn." class="underline__links">
+								{% if item.status == 0 %}
+									VS {{ item.vs }}
+								{% elseif item.status == 2 %}
+									zbývá {{ (item.price - item.amount)|number_format(2, ',', '.') }} {{ currencies[item.currency_id].abbreviation }}
+								{% elseif item.status == 4 %}
+									{% if item.delivery_type is same as(0) %}
+										<a target="_blank" href="https://www.postaonline.cz/trackandtrace/-/zasilka/cislo?parcelNumbers={{ item.tracking_no }}" title="Česká pošta">{{ item.tracking_no }}</a>
+									{% elseif item.delivery_type == 1 %}
+										<a target="_blank" href="https://www.ppl.cz/main2.aspx?idSearch={{ item.tracking_no }}&cls=Package" title="PPL">{{ item.tracking_no }}</a>
+									{% elseif item.delivery_type == 2 %}
+										<a target="_blank" href="https://tracking.dpd.de/status/cs_CZ/parcel/{{ item.tracking_no }}" title="DPD">{{ item.tracking_no }}</a>
+									{% elseif item.delivery_type == 3 %}
+										<a target="_blank" href="https://www.dhl.cz/content/cz/cs/express/sledovani_zasilek.shtml?AWB={{ item.tracking_no }}&brand=DHL" title="DHL">{{ item.tracking_no }}</a>
+									{% elseif item.delivery_type == 4 %}
+										<a target="_blank" href="http://online.gls-czech.com/index.php?page=tt_page.php?tt_value={{ item.tracking_no }}" title="GLS">{{ item.tracking_no }}</a>
+									{% elseif item.delivery_type == 5 %}
+										<a target="_blank" href="https://www.zasilkovna.cz/vyhledavani?number={{ item.tracking_no }}&name=&surname=" title="Zásilkovna">{{ item.tracking_no }}</a>
+									{% elseif item.delivery_type == 6 %}
+										<span title="{{ item.delivery_custom }}">{{ item.tracking_no }}</span>
+									{% else %}
+										{{ item.tracking_no }}
+									{% endif %}
+								{% else %}
+								  -
+								{% endif %}
+							</td>
+							<td class="text-right">
+								{% if role != 1 %}
+								<button class="btn btn-icon btn-rounded" role="button" data-content-next>
+									<span class="svg__container">
+										<svg class="svg__icon svg__content">
+											<use xlink:href="/assets/img/svg/svg.svg#more-vert" x="0" y="0" width="100%" height="100%" />
+										</svg>
+									</span>
+								</button>
+								<div data-target="data-settings">
+									<ul class="dropdown__menu-wrap">
+										<li class="dropdown__menu-item">
+											<a href="/order/contract/{{ item.id }}" target="_blank" title="Smlouva" class="dropdown__menu-link">
+												<div class="svg__container dropdown__menu-icon">
+													<svg class="svg__icon svg__content">
+														<use xlink:href="/assets/img/svg/svg.svg#file" x="0" y="0" width="100%" height="100%" />
+													</svg>
+												</div>
+												<span class="dropdown__menu-title">Smlouva</span>
+											</a>
+										</li>
+										<li class="dropdown__menu-item">
+											<a href="/order/instruction/{{ item.id }}" target="_blank" title="Instrukce" class="dropdown__menu-link">
+												<div class="svg__container dropdown__menu-icon">
+													<svg class="svg__icon svg__content">
+														<use xlink:href="/assets/img/svg/svg.svg#file" x="0" y="0" width="100%" height="100%" />
+													</svg>
+												</div>
+												<span class="dropdown__menu-title">Instrukce</span>
+											</a>
+										</li>
+										{% if item.status in [0,2,3] and role != 1 and role != 0 %}
+										<li class="dropdown__menu-item">
+											<a href="/order/ajax_payment/{{ item.id }}" title="Platba" data-form-name="order_payment_add" class="js-dialog dropdown__menu-link">
+												<div class="svg__container dropdown__menu-icon">
+													<svg class="svg__icon svg__content">
+														<use xlink:href="/assets/img/svg/svg.svg#payment" x="0" y="0" width="100%" height="100%" />
+													</svg>
+												</div>
+												<span class="dropdown__menu-title">Platba</span>
+											</a>
+										</li>
+										{% endif %}
+										{% if item.status in [0,2] and role != 1 %}
+										<li class="dropdown__menu-item">
+											<a href="/order/status/cancel/{{ item.id }}" title="Zrušeno" class="js-confirm dropdown__menu-link">
+												<div class="svg__container dropdown__menu-icon">
+													<svg class="svg__icon svg__content">
+														<use xlink:href="/assets/img/svg/svg.svg#close" x="0" y="0" width="100%" height="100%" />
+													</svg>
+												</div>
+												<span class="dropdown__menu-title">Zrušeno</span>
+											</a>
+										</li>
+										{% endif %}
+										{% if item.status == 2 and role != 1 and role != 0 %}
+										<li class="dropdown__menu-item">
+											<a href="/order/ajax_pay/{{ item.id }}" title="Uhrazeno" data-form-name="order_pay" class="js-dialog dropdown__menu-link">
+												<div class="svg__container dropdown__menu-icon">
+													<svg class="svg__icon svg__content">
+														<use xlink:href="/assets/img/svg/svg.svg#done" x="0" y="0" width="100%" height="100%" />
+													</svg>
+												</div>
+												<span class="dropdown__menu-title">Uhrazeno</span>
+											</a>
+										</li>
+										{% endif %}
+										{% if item.status == 3 and role != 1 and role != 0 %}
+										<li class="dropdown__menu-item">
+											<a href="/order/ajax_send/{{ item.id }}" title="Odesláno" data-form-name="order_send" class="js-dialog dropdown__menu-link">
+												<div class="svg__container dropdown__menu-icon">
+													<svg class="svg__icon svg__content">
+														<use xlink:href="/assets/img/svg/svg.svg#email" x="0" y="0" width="100%" height="100%" />
+													</svg>
+												</div>
+												<span class="dropdown__menu-title">Odesláno</span>
+											</a>
+										</li>
+										{% endif %}
+										{% if item.status == 4 and role != 1 and role != 0 %}
+										<li class="dropdown__menu-item">
+											<a href="/order/ajax_receive/{{ item.id }}" title="Přijato" data-form-name="order_receive" class="js-dialog dropdown__menu-link">
+												<div class="svg__container dropdown__menu-icon">
+													<svg class="svg__icon svg__content">
+														<use xlink:href="/assets/img/svg/svg.svg#settings" x="0" y="0" width="100%" height="100%" />
+													</svg>
+												</div>
+												<span class="dropdown__menu-title">Přijato</span>
+											</a>
+										</li>
+										{% endif %}
+									</ul>
+								</div>
+								{% endif %}
+							</td>
+						</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
+			{% if items is empty %}
+			<div class="no_items">
+				<p>Žádné položky k zobrazení.</p>
+			</div>
+			{% endif %}
+		</div>
+	</div>
+</section>
+{% endblock %}
+{# <table>
+	<thead>
+		<tr>
+			<th>Datum objednání</th>
+			<th>Produkt</th>
+			<th>Cena</th>
+			<th>Stav</th>
+			<th>Platné od</th>
+			<th>Platné do</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for item in items %}
+		<tr>
+			<td>{{ item.timestamp }}</td>
+			<td>
+				<a href="/catalog/detail/{{ item.product_id }}">{{ products[item.product_id].name }}</a>
+			</td>
+			<td>{{ item.price|number_format(2, ',', '.') }} {{ currencies[item.currency_id].abbreviation }}</td>
+			<td>{{ statuses[item.status] }} (uhrazeno {{ item.amount|number_format(2, ',', '.') }} {{ currencies[item.currency_id].abbreviation }})</td>
+			<td>{{ item.valid_from ?? '-' }}</td>
+			<td>{{ item.valid_to ?? '-' }}</td>
+			<td>
+				<a href="/order/contract/{{ item.id }}">Smlouva</a>
+				{% if item.status == 0 %}
+				<a class="js-confirm" href="/order/status/cancel/{{ item.id }}">Zrušeno</a>
+				{% endif %}
+				{% if item.status == 2 %}
+				<a class="js-confirm" href="/order/status/paid/{{ item.id }}">Uhrazeno</a>
+				{% endif %}
+				{% if item.status in [0,2,3] %}
+				<a class="js-dialog" data-form-name="order_payment_add" href="/order/ajax_payment/{{ item.id }}">Platba</a>
+				{% endif %}
+				{% if item.status == 3 %}
+				<a class="js-dialog" data-form-name="order_send" href="/order/ajax_send/{{ item.id }}">Odesláno</a>
+				{% endif %}
+				{% if item.status == 4 %}
+				<a class="js-dialog" data-form-name="order_receive" href="/order/ajax_receive/{{ item.id }}">Přijato</a>
+				{% endif %}
+			</td>
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>
+{% if items is empty %}
+<p><i>Žádné položky k zobrazení.</i></p>
+{% endif %} #}

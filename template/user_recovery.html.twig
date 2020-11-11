@@ -1,0 +1,28 @@
+{% extends 'layout/no_menu.html.twig' %}
+
+{% import 'macro/form.html.twig' as form %}
+
+{% block content %}
+<section class="layout__box-wrap">
+  <div class="layout__box-content">
+    <div class="layout__box-img">
+      <img src="/assets/img/logo{{ subdom }}.svg" alt="Finettte s.r.o." />
+    </div>
+    <h1 class="layout__box-title">Obnovení hesla</h2>
+    <span class="layout__box-subtext">Krok 1/2</span>
+    <form action="/user/ajax_recovery" data-name="user_recovery" novalidate>
+      {{ form.input('E-Mail', 'email', [{
+        'type' : 'empty',
+        'text' : 'Musíte vyplnit e-mail'
+      }, {
+        'type' : 'format',
+        'text' : 'Špatný formát e-mailu'
+      }], null, 'email', false, 'email') }}
+      <div class="form__button-wrap button-wrap-vertical">
+        {{ form.submit('Obnovit', 'Obnovuji...') }}
+        <a href="/user/login" title="Přihlásit se" class="grey-link smaller-link">Přihlásit se</a>
+      </div>
+    </form>
+  </div}>
+</section>
+{% endblock %}

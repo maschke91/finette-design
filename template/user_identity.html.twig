@@ -1,0 +1,52 @@
+{% extends 'layout/no_menu.html.twig' %}
+
+{% import 'macro/form.html.twig' as form %}
+
+{% block content %}
+<section class="layout__box-wrap">
+  <div class="layout__box-content">
+    <div class="layout__box-img">
+      <img src="/assets/img/logo{{ subdom }}.svg" alt="Finettte s.r.o." />
+    </div>
+    <h1 class="layout__box-title">Volba identity</h2>
+    <ul class="choose__list">
+      {% for identity in identities %}
+        <li data-value="{{ identity.id }}" class="choose__list-item">{{ identity.name }}</li>
+      {% endfor %}
+    </ul>
+    <div class="hidden">
+      <form action="/user/ajax_identity" data-name="user_identity" novalidate>
+        {{ form.select('Identita', 'identity', [{
+          'type' : 'empty',
+          'text' : 'Musíte vybrat identitu'
+        }, {
+          'type' : 'valid',
+          'text' : 'Neplatná identita'
+        }], identities) }}
+        <br />
+        {{ form.submit('Vybrat', 'Vybírám...') }}
+      </form>
+    </div>
+  </div>
+</section>
+{% endblock %}
+{% block pageJavascript %}
+<script>
+  $(document).on('click', '.choose__list-item', function() {
+    var input = $(".js-select"),
+        liOption = $(this).attr("data-value");
+
+    input.val(liOption);
+    input.closest('form').submit();
+});
+</script>
+  <!-- <script>
+    $(document).on('click', '.choose__list-item', function() {
+      var input = $(".js-select"),
+          liOption = $(this).attr("data-value");
+
+      input.attr('value', liOption);
+      input.closest('form').submit();
+  });
+  </script> -->
+{% endblock %}

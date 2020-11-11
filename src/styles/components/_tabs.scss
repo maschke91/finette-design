@@ -1,0 +1,49 @@
+// Tabs
+.tabs__wrap {
+  background: $white;
+  padding: 0;
+  margin: 0;
+}
+.banks_row,
+.tab__navigation-wrap {
+  border-bottom: 1px solid $grey-light;
+}
+.tab__navigation-button {
+  text-transform: none;
+  display: block;
+  width: 100%;
+  @include transition(321ms);
+  
+  &:hover {
+    transform: translateY(-0.25rem);
+  }
+  
+  &.active:not(:hover) {
+    background-color: rgba(158,158,158,.2);
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+  
+  @media screen and (min-width: $sm) {
+    display: inline-block;
+    width: auto;
+  }
+}
+.tab__box-content {
+  display: none;
+  visibility: hidden;
+  opacity: 0;
+  padding: 1em 0 0;
+  @include transition(321ms);
+  
+  &.active {
+    display: block;
+    visibility: visible;
+    opacity: 1;
+  }
+  
+  p:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+  }
+}

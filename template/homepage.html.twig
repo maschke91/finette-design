@@ -1,0 +1,8 @@
+{% extends 'layout/no_menu.html.twig' %}
+
+{% block content %}
+  <h1>Hello {{ user_id ? '#' ~ user_id : 'nobody' }}!</h1>
+  <p>Lorem ipsum dolor sit amet, consectetuer adispicing elit...</p>
+  <p>Role: {{ role ?? 'n/a' }}</p>
+  <p>Identita: {{ identity.id ?? 'n/a' }} | {{ identity.type ?? 'n/a' }}</p>
+{% endblock %}

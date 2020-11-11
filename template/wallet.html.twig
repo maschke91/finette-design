@@ -1,0 +1,166 @@
+{% extends 'layout/menu.html.twig' %}
+
+{% import 'macro/form.html.twig' as form %}
+{% import 'macro/common.html.twig' as common %}
+
+{% set statuses = [
+{
+'title': 'Nevyplaceno',
+'state': '0'
+},
+{
+'title': 'Vyplaceno',
+'state': '3'
+}
+] %}
+
+{% set types = {
+0: 'A',
+1: 'SA',
+2: 'M'
+} %}
+
+{% block content %}
+<section class="page__content bg-white box__shadow">
+	<div class="breadcrumbs__wrap">
+		<span class="breadcrumbs__item">Konto</span>
+	</div>
+	<div class="section">
+		<div class="tabs__wrap">
+			{% if role != 1 %}
+			<nav class="tab__navigation-wrap">
+				<button data-tab="tab-1" class="btn tab__navigation-button active">Konto</button>
+				{% if role == 4 %}
+				<button data-tab="tab-2" class="btn tab__navigation-button">Vyplacení</button>
+				{% endif %}
+			</nav>
+			{% endif %}
+			<div class="tab__boxes-wrap">
+				<div class="tab__box-content active" data-content-box="tab-1">
+					{# <h1 class="legend">Konto</h1> #}
+					<div class="js-table-wrapper">
+						<table class="table responsive-table">
+							<thead>
+								<tr>
+									<th>Částka</th>
+									<th>Příjemce</th>
+									<th>Typ</th>
+									<th>Stav</th>
+									<!-- <th>Objednávka</th> -->
+									<th>Připsáno</th>
+									<th>Vyplaceno</th>
+									<th class="text-right">{% if role == 4 %}<a class="js-dialog btn btn-colored primary-bg" data-form-name="wallet_add" href="/wallet/ajax_add">Přidat</a>{% endif %}</th>
+								</tr>
+							</thead>
+							<tbody>
+								{% for item in wallet.items %}
+								<tr>
+									<td data-label="Částka">{{ item.amount|number_format(2, ',', '.') }} {{ currencies[item.currency_id].abbreviation }}</td>
+									<td data-label="Příjemce" class="td-long-text"><span class="max__width-250">{{ affiliates[item.profile_id].name }}</span></td>
+									<td data-label="Typ"><span class="role__badge">{{ types[item.type] }}</span></td>
+									<td data-label="Stav"><span class="state-{{ statuses[item.status].state }}">{{ statuses[item.status].title }}</span></td>
+									{# <td data-label="Objednávka">{{ item.valid_from_date ?? '-' }}</td> #}
+									<td data-label="Připsáno">{{ item.timestamp }}</td>
+									<td data-label="Vyplaceno">{{ item.paid_timestamp ?? '-' }}</td>
+									<td>&nbsp;</td>
+								</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+					{% if role == 4 %}
+					{% if wallet.items is empty %}
+					<div class="no_items">
+						<p>Žádné položky k zobrazení.</p>
+					</div>
+					{% endif %}
+					{% endif %}
+				</div>
+				{% if role == 4 %}
+				<div class="tab__box-content" data-content-box="tab-2">
+					{# <h2 class="legend">Vyplácení</h2> #}
+					<table class="table responsive-table mt-3">
+						<thead>
+							<tr>
+								<th>Datum</th>
+								<th>Částka</th>
+								<th>Soubory</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for item in history.items %}
+							<tr>
+								<td data-label="Datum">{{ item.timestamp }}</td>
+								<td data-label="Částka">{{ item.amount|number_format(2, ',', '.') }} CZK</td>
+								<td data-label="Soubory" class="td-long-text">
+									<a download href="/file/download/{{ item.id }}/payment" title="Hromadný příkaz" class="wallet__download-link">
+										<span class="svg__container">
+											<svg class="svg__icon svg__content">
+												<use xlink:href="/assets/img/svg/svg.svg#file" x="0" y="0" width="100%" height="100%" />
+											</svg>
+										</span>
+										<span class="wallet__download-link">Hromadný příkaz</span>
+									</a>
+									<span class="d-inline-block mx-2">/</span>
+									<a download href="/file/download/{{ item.id }}/account" title="Účetnictví" class="wallet__download-link">
+										<span class="svg__container">
+											<svg class="svg__icon svg__content">
+												<use xlink:href="/assets/img/svg/svg.svg#file" x="0" y="0" width="100%" height="100%" />
+											</svg>
+										</span>
+										<span class="wallet__download-link">Účetnictví</span>
+									</a>
+								</td>
+							</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+					{% if history.items is empty %}
+					<div class="no_items">
+						<p>Žádné položky k zobrazení.</p>
+					</div>
+					{% endif %}
+					<div class="text-right pt-4">
+						<a href="/wallet/payout" class="btn btn-colored primary-bg" title="Vyplatit">Vyplatit</a>
+					</div>
+				</div>
+				{% endif %}
+			</div>
+		</div>
+	</div>
+</section>
+{% endblock %}
+
+{#
+<h1>Konto</h1>
+<table>
+<thead>
+<tr>
+<th>Částka</th>
+<th>Příjemce</th>
+<th>Typ</th>
+<th>Stav</th>
+<th>Připsáno</th>
+<th>Vyplaceno</th>
+<th>
+	<a class="js-dialog" data-form-name="wallet_add" href="/wallet/ajax_add">Přidat</a>
+</th>
+</tr>
+</thead>
+<tbody>
+{% for item in items %}
+<tr>
+<td>{{ item.amount|number_format(2, ',', '.') }} {{ currencies[item.currency_id].abbreviation }}</td>
+<td>{{ affiliates[item.profile_id].name }}</td>
+<td>{{ types[item.type] }}</td>
+<td>{{ statuses[item.status] }}</td>
+<td>{{ item.timestamp }}</td>
+<td>{{ item.valid_to ?? '-' }}</td>
+<td></td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+{% if items is empty %}
+<p><i>Žádné položky k zobrazení.</i></p>
+{% endif %} #}

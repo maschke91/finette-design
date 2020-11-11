@@ -1,0 +1,60 @@
+{% import 'macro/form.html.twig' as form %}
+
+<div class="modal__content-heading">
+	<span class="modal__content-title">Připsání odměny</span>
+</div>
+<form action="/wallet/ajax_add_save" data-name="wallet_add" novalidate>
+	<div class="modal__content-text">
+		<div class="d-block d-md-flex">
+			<div class="mr-0 mr-md-2">
+				{{ form.select('Affiliate', 'profile_id', [{
+					'type' : 'empty',
+					'text' : 'Musíte vybrat affiliate'
+				}], affiliates, null, null, true) }}
+			</div>
+			<div class="mr-0 mr-md-2">
+				{{ form.select('Měna', 'currency_id', [{
+					'type' : 'empty',
+					'text' : 'Musíte vybrat měnu'
+				}], currencies) }}
+			</div>
+			<div>
+				{{ form.input('Částka', 'amount', [{
+					'type' : 'empty',
+					'text' : 'Musíte vyplnit částku'
+				}, {
+					'type' : 'format',
+					'text' : 'Špatný formát částky'
+				}]) }}
+			</div>
+		</div>
+	</div>
+	<div class="modal__content-footer">
+		<a href="#" class="btn modal__button--cancel">Zrušit</a>
+		{{ form.submit('Uložit', 'Ukládám...') }}
+	</div>
+</form>
+
+{# <h3>Připsání odměny</h3>
+	<form action="/wallet/ajax_add_save" data-name="wallet_add" novalidate>
+		{{ form.select('Affiliate', 'profile_id', [{
+			'type' : 'empty',
+			'text' : 'Musíte vybrat affiliate'
+		}], affiliates) }}
+		<br />
+		{{ form.select('Měna', 'currency_id', [{
+			'type' : 'empty',
+			'text' : 'Musíte vybrat měnu'
+		}], currencies) }}
+		<br />
+		{{ form.input('Částka', 'amount', [{
+			'type' : 'empty',
+			'text' : 'Musíte vyplnit částku'
+		}, {
+			'type' : 'format',
+			'text' : 'Špatný formát částky'
+		}]) }}
+		<br />
+		{{ form.submit('Uložit', 'Ukládám...') }}
+		<a href="#" class="modal__button--cancel">Zrušit</a>
+	</form> #}

@@ -1,0 +1,47 @@
+{% extends 'layout/menu.html.twig' %}
+
+{% import 'macro/form.html.twig' as form %}
+
+{% block content %}
+<section class="page__content bg-white box__shadow">
+	<div class="breadcrumbs__wrap">
+		<span class="breadcrumbs__item">Štítky</span><span class="breadcrumbs__item active">Editace štítku</span>
+	</div>
+	<div class="section">
+		<form action="/label/ajax_save" data-name="label_detail" novalidate>
+			{{ form.input('Název', 'name', [{
+				'type' : 'empty',
+				'text' : 'Musíte vyplnit název'
+			}], name) }}
+			{{ form.textarea('Popis', 'text', [{
+				'type' : 'empty',
+				'text' : 'Musíte vyplnit text'
+			}], text) }}
+			<div class="form__button-wrap button-wrap-horizontal">
+				<a href="/label" title="Pozvánky" class="btn">Zpět</a>
+				{{ form.hidden('id', id) }}
+				{{ form.submit('Uložit', 'Ukládám...') }}
+			</div>
+		</form>
+	</div>
+</section>
+{% endblock %}
+
+{#
+	<h1>Štítky</h1>
+	<h2>Detail</h2>
+	<form action="/label/ajax_save" data-name="label_detail" novalidate>
+		{{ form.input('Název', 'name', [{
+			'type' : 'empty',
+			'text' : 'Musíte vyplnit název'
+		}], name) }}
+		<br />
+		{{ form.textarea('Popis', 'text', [{
+			'type' : 'empty',
+			'text' : 'Musíte vyplnit text'
+		}], text) }}
+		<br />
+		{{ form.hidden('id', id) }}
+		{{ form.submit('Uložit', 'Ukládám...') }}
+	</form>	
+	#}

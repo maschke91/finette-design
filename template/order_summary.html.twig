@@ -1,0 +1,133 @@
+{% extends 'layout/menu.html.twig' %}
+
+{% import 'macro/form.html.twig' as form %}
+
+{% block content %}
+<section class="page__content bg-white box__shadow">
+{% include "include/order_nav.html.twig" %}
+	<div class="px-4">
+		<div class="pb-4">
+			<h2 class="legend pb-3">Souhrn</h2>
+			<div class="col-xs-12 col-md-6 p-0">
+				<table class="table">
+					{% if type == 0 %}
+					{% if profile.title_before %}
+					<tr>
+						<th>Titul před jménem</th>
+						<td>{{ profile.title_before }}</td>
+					</tr>
+					{% endif %}
+					<tr>
+						<th>Křestní jméno</th>
+						<td>{{ profile.name }}</td>
+					</tr>
+					<tr>
+						<th>Příjmení</th>
+						<td>{{ profile.surname }}</td>
+					</tr>
+					{% if profile.title_after %}
+					<tr>
+						<th>Titul za jménem</th>
+						<td>{{ profile.title_after }}</td>
+					</tr>
+					{% endif %}
+					{% else %}
+					<tr>
+						<th>Název</th>
+						<td>{{ profile.name }}</td>
+					</tr>
+					<tr>
+						<th>IČ</th>
+						<td>{{ profile.crn }}</td>
+					</tr>
+					<tr>
+						<th>Spisová značka</th>
+						<td>{{ profile.file_no }}</td>
+					</tr>
+					<tr>
+						<th>Statutární zástupce</th>
+						<td>{{ profile.statutory_representative }}</td>
+					</tr>
+					{% endif %}
+					<tr>
+						<th>Ulice a č.p.</th>
+						<td>{{ profile.address_permanent_street }} {{ profile.address_permanent_no }} {{ profile.address_permanent_addition }}</td>
+					</tr>
+					<tr>
+						<th>Město</th>
+						<td>{{ profile.address_permanent_city }}</td>
+					</tr>
+					<tr>
+						<th>PSČ</th>
+						<td>{{ profile.address_permanent_zip }}</td>
+					</tr>
+					<tr>
+						<th>Země</th>
+						<td>{{ profile.address_permanent_country }}</td>
+					</tr>
+					<tr>
+						<th>Bankovní účet</th>
+						<td>{{ bank.no }}/{{ bank.code }}</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+		<div class="pb-4">
+			<h2 class="legend pb-3">Údaje</h2>
+			<table class="table full-width responsive-table">
+				<thead>
+					<tr>
+						<th>Produkt</th>
+						<th>Dostupnost</th>
+						<th>Kusů</th>
+						<th>Cena za kus</th>
+						<th>Cena celkem</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td data-label="Produkt">
+							<a href="/catalog/detail/{{ product.id }}" title="{{ product.name }}" target="_blank">{{ product.name }}</a>
+						</td>
+						<td data-label="Dostupnost" class="responsive__title-block">
+							{% include "include/product_pcs_legend.html.twig" %}
+							{#  {{ product.pcs_free }}/{{ product.pcs_reserved }}/{{ product.pcs_sold }}
+							<br />
+							{{ product.pcs_free_percent }}%/{{ product.pcs_reserved_percent }}%/{{ product.pcs_sold_percent }}% #}
+						</td>
+						<td data-label="Kusů">{{ pcs }}</td>
+						<td data-label="Cena za kus">{{ product.price_actual|number_format(2, ',', '.') }} {{ currency.abbreviation }}</td>
+						<td data-label="Cena celkem">{{ price_total|number_format(2, ',', '.') }} {{ currency.abbreviation }}</td>
+						<td>
+							<a href="/order/contract" target="_blank">Vzor smlouvy</a>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="text-center">
+			<form action="/order/ajax_summary" data-name="order_summary">
+				{# {{ form.checkbox('Souhlasím s obchodními podmínkami', 'vop', [{
+					'type' : 'empty',
+					'text' : 'Musíte souhlasit s podmínkami'
+				}]) }} #}
+				<div class="form__input-wrap form__input-checkbox no-border-wrap">
+					<input type="checkbox" name="vop" id="vop" class="form__input">
+					<label class="form__checkbox-label" for="vop"><a href="/file/download/37" title="Obchodní podmínky" target="_blank">Souhlasím s obchodními podmínkami</a></label>
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="checkbox__state-checked"><path d="M9 21.035l-9-8.638 2.791-2.87 6.156 5.874 12.21-12.436 2.843 2.817z"></path></svg>
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="checkbox__state-indeterminate"><path d="M0 10h24v4h-24z"></path></svg>
+					<span data-validate="" data-invalid-vop="empty" class="error__msg-wrap" style="display: none;">Musíte souhlasit s podmínkami</span>
+				</div>
+				<div class="form__button-wrap button-wrap-horizontal">
+					<div class="d-inline-block">
+						{{ form.submit('Odeslat', 'Odesílám...') }}
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</section>
+
+
+{% endblock %}

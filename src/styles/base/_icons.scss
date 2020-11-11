@@ -1,0 +1,59 @@
+/*
+  * SVG Icons
+  */
+.svg__container {
+  display: inline-block;
+  vertical-align: middle;
+  position: relative;
+ /*  position: relative;
+  height: 0;
+  padding-top: 100%; */
+
+  &:before {
+    content: '';
+    display: block;
+    @include aspectRatio(1,1);
+  } 
+}
+
+.svg__content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  fill: currentColor;
+  pointer-events: none;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+}
+.svg__icon {
+  @include transition(321ms);
+}
+
+svg {
+  fill: $grey;
+  @include transition(321ms);
+
+  &:hover {
+  fill: $secondary-color;
+  }
+ }
+
+// Boolen icon
+.boolean__icon-svg {
+  width: 18px !important;
+}
+.bool__icon-svg {
+  width: 24px;
+}
+.boolean__state-true {
+  svg {
+    fill: $success;
+  }
+}
+.boolean__state-false {
+  svg {
+    fill: $error-color;
+  }
+}

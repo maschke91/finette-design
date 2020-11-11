@@ -1,0 +1,585 @@
+{% extends 'layout/menu.html.twig' %}
+
+{% import 'macro/form.html.twig' as form %}
+
+{% block content %}
+<section class="page__content bg-white box__shadow">
+	<div class="breadcrumbs__wrap">
+		<span class="breadcrumbs__item">Produkty</span><span class="breadcrumbs__item active">Editace produktu</span>
+	</div>
+	<div class="section">
+		<div class="tabs__wrap">
+			<nav class="tab__navigation-wrap">
+				<button data-tab="tab-1" class="btn tab__navigation-button active">Produkt</button>
+				{% if id %}
+				<button data-tab="tab-2" class="btn tab__navigation-button">Cenový vektor</button>
+				{% endif %}
+				{% if id %}
+				<button data-tab="tab-3" class="btn tab__navigation-button">Uživatelé</button>
+				<button data-tab="tab-4" class="btn tab__navigation-button">Pozvánky</button>
+				{% endif %}
+			</nav>
+			<div class="tab__boxes-wrap">
+				<div class="tab__box-content pt-3 active" data-content-box="tab-1">
+					<form class="full-width" action="/product/ajax_save" data-name="product_detail">
+						<div class="row">
+							<div class="col-xs-12 col-lg-6 px-0">
+								<fieldset>
+									<legend class="legend">Zařazení</legend>
+									<div class="row">
+										<div class="col-xs-12 col-sm-6">
+											{{ form.select('Emitent', 'emitent_id', [{
+												'type' : 'empty',
+												'text' : 'Musíte vybrat emitenta'
+											}], emitents, emitent_id) }}
+										</div>
+										<div class="col-xs-12 col-sm-6">
+											{{ form.select('Kategorie', 'category_id', [{
+												'type' : 'empty',
+												'text' : 'Musíte vybrat kategorii'
+											}], categories, category_id) }}
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-xs-12">
+											{{ form.multicheckbox('Štítky', 'label_ids', null, labels, label_ids) }}
+										</div>
+									</div>
+								</fieldset>
+							</div>
+							<div class="col-xs-12 col-lg-6 px-0">
+								<fieldset>
+									<legend class="legend">Cena</legend>
+									<div class="row">
+										<div class="col-xs-12 col-sm-6">
+											{{ form.input('Nominální hodnota', 'price', [{
+												'type' : 'empty',
+												'text' : 'Musíte vyplnit nominální hodnotu'
+											}, {
+												'type' : 'format',
+												'text' : 'Špatný formát nominální hodnoty'
+											}], price) }}
+										</div>
+										<div class="col-xs-12 col-sm-6">
+											{{ form.select('Měna', 'currency_id', [{
+												'type' : 'empty',
+												'text' : 'Musíte vybrat měnu'
+											}], currencies, currency_id) }}
+										</div>
+									</div>
+								</fieldset>
+							</div>
+						</div>
+						<fieldset>
+							<legend class="legend">Odměny</legend>
+							<div class="row">
+								<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+									{{ form.select('Základ odměny', 'commission_type', [{
+										'type' : 'empty',
+										'text' : 'Musíte vybrat kategorii'
+									}], [{
+										'id'   : 0,
+										'name' : 'Nominální hodnota'
+									}, {
+										'id'   : 1,
+										'name' : 'Tržní hodnota'
+									}], commission_type) }}
+								</div>
+								<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+									{{ form.input('Affiliate odměna', 'commission_rate_affiliate', [{
+										'type' : 'empty',
+										'text' : 'Musíte vyplnit affiliate odměnu'
+									}, {
+										'type' : 'format',
+										'text' : 'Špatný formát affiliate odměny'
+									}], commission_rate_affiliate) }}
+								</div>
+								<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+									{{ form.input('Superaffiliate odměna', 'commission_rate_superaffiliate', [{
+										'type' : 'empty',
+										'text' : 'Musíte vyplnit superaffiliate odměnu'
+									}, {
+										'type' : 'format',
+										'text' : 'Špatný formát affiliate odměny'
+									}], commission_rate_superaffiliate) }}
+								</div>
+							</div>
+						</fieldset>
+						<fieldset>
+							<legend class="legend">
+								Množství
+							</legend>
+							<div class="row">
+								<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+									{{ form.input('Celkový počet kusů', 'pcs', [{
+										'type' : 'empty',
+										'text' : 'Musíte vyplnit celkový počet kusů'
+									}, {
+										'type' : 'format',
+										'text' : 'Špatný formát celkového počtu kusů'
+									}], pcs, 'number') }}
+								</div>
+								<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+									{{ form.input('Odečtených kusů', 'pcs_sub', [{
+										'type' : 'empty',
+										'text' : 'Musíte vyplnit odečtený počet kusů'
+									}, {
+										'type' : 'format',
+										'text' : 'Špatný formát odečteného počtu kusů'
+									}, {
+										'type' : 'valid',
+										'text' : 'Odečtených kusů je více než celkový počet'
+									}], pcs_sub, 'number') }}
+								</div>
+								<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+									{{ form.input('Minimální odběr', 'pcs_min', [{
+										'type' : 'empty',
+										'text' : 'Musíte vyplnit minimální odběr'
+									}, {
+										'type' : 'format',
+										'text' : 'Špatný formát minimálního odběru'
+									}, {
+										'type' : 'valid',
+										'text' : 'Minimální odběr je větší než zbylý počet'
+									}], pcs_min, 'number') }}
+								</div>
+								<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+									{{ form.input('Počet inverstorů', 'buyers_max', [{
+										'type' : 'empty',
+										'text' : 'Musíte vyplnit počet inverstorů'
+									}, {
+										'type' : 'format',
+										'text' : 'Špatný formát počtu inverstorů'
+									}], buyers_max, 'number') }}
+								</div>
+							</div>
+						</fieldset>
+						<fieldset>
+							<legend class="legend">Termíny</legend>
+							<div class="row">
+								<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+									{{ form.datepicker('Počátek platnosti', 'valid_from_date', [{
+										'type' : 'empty',
+										'text' : 'Musíte vyplnit počátek platnosti'
+									}, {
+										'type' : 'format',
+										'text' : 'Špatný formát počátku platnosti'
+									}], valid_from_date) }}
+								</div>
+								<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+									{{ form.select('Typ platnosti', 'valid_type', [{
+										'type' : 'empty',
+										'text' : 'Musíte vybrat typ platnosti'
+									}], [{
+										'id'   : 0,
+										'name' : 'Datum konce'
+									}, {
+										'id'   : 1,
+										'name' : 'Počet dní'
+									}], valid_type, 'validType') }}
+								</div>
+								<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3" data-toggle-validType="0">
+									{{ form.datepicker('Konec platnosti', 'valid_to_date', [{
+										'type' : 'empty',
+										'text' : 'Musíte vyplnit konec platnosti'
+									}, {
+										'type' : 'format',
+										'text' : 'Špatný formát konce platnosti'
+									}, {
+										'type' : 'valid',
+										'text' : 'Konec platnosti je dříve než počátek'
+									}], valid_to_date) }}
+								</div>
+								<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3" data-toggle-validType="1">
+									{{ form.input('Platnost dní', 'valid_days', [{
+										'type' : 'empty',
+										'text' : 'Musíte vyplnit počet dní platnosti'
+									}, {
+										'type' : 'format',
+										'text' : 'Špatný formát počtu dní platnosti'
+									}], valid_days) }}
+								</div>
+								<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+									{{ form.datepicker('Počátek prodeje', 'sell_from_date', [{
+										'type' : 'empty',
+										'text' : 'Musíte vyplnit počátek prodeje'
+									}, {
+										'type' : 'format',
+										'text' : 'Špatný formát počátku prodeje'
+									}], sell_from_date) }}
+								</div>
+								<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+									{{ form.datepicker('Konec prodeje', 'sell_to_date', [{
+										'type' : 'empty',
+										'text' : 'Musíte vyplnit konec prodeje'
+									}, {
+										'type' : 'format',
+										'text' : 'Špatný formát konce prodeje'
+									}, {
+										'type' : 'valid',
+										'text' : 'Konec prodeje je dříve než počátek'
+									}], sell_to_date) }}
+								</div>
+								<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+									{{ form.datepicker('Maturita', 'maturity_date', [{
+										'type' : 'empty',
+										'text' : 'Musíte vyplnit maturitu'
+									}, {
+										'type' : 'format',
+										'text' : 'Špatný formát maturity'
+									}], maturity_date) }}
+								</div>
+							</div>
+						</fieldset>
+						<fieldset>
+							<legend class="legend">Základní informace</legend>
+							<div class="row">
+								<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+									{{ form.input('Název', 'name', [{
+										'type' : 'empty',
+										'text' : 'Musíte vyplnit název'
+									}], name) }}
+								</div>
+								<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+									{{ form.input('Úrok', 'rate', [{
+										'type' : 'empty',
+										'text' : 'Musíte vyplnit úrok'
+									}, {
+										'type' : 'format',
+										'text' : 'Špatný formát úroku'
+									}], rate) }}
+								</div>
+								<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+									{{ form.input('ISIN', 'isin', [{
+										'type' : 'empty',
+										'text' : 'Musíte vyplnit ISIN'
+									}], isin) }}
+								</div>
+								<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+									{{ form.input('IBAN', 'iban', [{
+										'type' : 'empty',
+										'text' : 'Musíte vyplnit IBAN'
+									}, {
+										'type' : 'format',
+										'text' : 'Špatný formát IBAN'
+									}], iban) }}
+								</div>
+								<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+									{{ form.input('Číselná řada', 'series_no', [{
+										'type' : 'empty',
+										'text' : 'Musíte vyplnit číselnou řadu'
+									}, {
+										'type' : 'format',
+										'text' : 'Špatný formát číselné řady'
+									}], series_no) }}
+									{{ form.checkbox('Povolit číselnou řadu', 'series_no_active', null, series_no_active) }}
+								</div>
+								<div class="col-xs-12">
+									<div class="full-width-input">
+										{{ form.textarea('Popis', 'text', [{
+											'type' : 'empty',
+											'text' : 'Musíte vyplnit text'
+										}], text) }}
+									</div>
+								</div>
+							</div>
+						</fieldset>
+						<div class="form__button-wrap button-wrap-horizontal">
+							{{ form.hidden('id', id) }}
+							{{ form.submit('Uložit', 'Ukládám...') }}
+						</div>
+					</form>
+				</div>
+				{% if id %}
+				<div class="tab__box-content pb-5 pt-3" data-content-box="tab-2">
+					<div class="row">
+						<div class="col-xs-12 col-md-8 px-0">
+							<form action="/product/ajax_price_import" data-name="product_price_import" enctype="multipart/form-data">
+							<div class="d-flex py-2">
+								<div>
+									<input type="file" name="import" />
+									<div>
+										<span data-validate="" data-invalid-import="empty" class="error__msg-wrap" style="display: none;">Musíte vybrat soubor</span>
+										<span data-validate="" data-invalid-import="format" class="error__msg-wrap" style="display: none;">Špatný formát souboru</span>
+									</div>
+								</div>
+								<div>
+									{{ form.submit('Importovat', 'Importuji...') }}
+									{{ form.hidden('product_id', id) }}
+								</div>
+							</div>
+
+							</form>
+							<form action="/product/ajax_price" data-name="product_price" class="full-width my-4">
+								<div class="row">
+									<div class="col-xs-12 col-sm-6 col-md-4">
+										{{ form.datepicker('Počátek ceny', 'from_date', [{
+											'type' : 'empty',
+											'text' : 'Musíte vyplnit počátek ceny'
+										}, {
+											'type' : 'format',
+											'text' : 'Špatný formát počátku ceny'
+										}, {
+											'type' : 'valid-min',
+											'text' : 'Počátek ceny je dříve než počátek prodeje'
+										}, {
+											'type' : 'valid-max',
+											'text' : 'Počátek ceny je později než konec prodeje'
+										}]) }}
+									</div>
+									<div class="col-xs-12 col-sm-6 col-md-4">
+										<div class="form__input-wrap  ">
+											<input type="text" name="price" id="price2" value="" class="form__input">
+											<label class="form__input-label" for="price2">Cena</label>
+											<span class="form__input-status"></span>
+											<span data-validate="" data-invalid-price="empty" class="error__msg-wrap" style="display: none;">Musíte vyplnit cenu</span>
+											<span data-validate="" data-invalid-price="format" class="error__msg-wrap" style="display: none;">Špatný formát ceny</span>
+
+										</div>
+										{# {{ form.input('Cena', 'price', [{
+											'type' : 'empty',
+											'text' : 'Musíte vyplnit cenu'
+										}, {
+											'type' : 'format',
+											'text' : 'Špatný formát ceny'
+										}]) }} #}
+									</div>
+									<div class="col-xs-12 col-sm-6 col-md-4 d-flex align-center">
+										{{ form.hidden('product_id', id) }}
+										{{ form.submit('Přidat', 'Přidávám...') }}
+									</div>
+								</div>
+							</form>
+							<div data-prices>
+								{{ include('misc/product_prices.html.twig') }}
+							</div>
+						</div>
+					</div>
+				</div>
+				{% endif %}
+				{% if id %}
+				<div class="tab__box-content pb-5 pt-3" data-content-box="tab-3">
+						<div class="row">
+							<div class="col-xs-12 px-0">
+								<form action="/product/ajax_rates" data-name="product_rates" class="full-width">
+									{{ form.rates('commission_rates', users, rates, [commission_rate_affiliate, commission_rate_superaffiliate]) }}
+									<div class="text-right">
+										{{ form.hidden('product_id', id) }}
+										{{ form.submit('Uložit', 'Ukládám...') }}
+									</div>
+								</form>
+							</div>
+						</div>
+				</div>
+				<div class="tab__box-content pb-5 pt-3" data-content-box="tab-4">
+					<div class="row">
+						<div class="col-xs-12 px-0">
+							<form action="/product/ajax_rates_invite" data-name="product_rates_invite" class="full-width">
+								{{ form.rates('commission_rates_invite', invites, rates_invites, [commission_rate_affiliate, commission_rate_superaffiliate]) }}
+								<div class="text-right">
+									{{ form.hidden('product_id', id) }}
+									{{ form.submit('Uložit', 'Ukládám...') }}
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+				{% endif %}
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+{% endblock %}
+
+
+			{# <h1>Produkty</h1>
+				<h2>Detail</h2> #}
+				{# <form action="/product/ajax_save" data-name="product_detail">
+					<h3>Zařazení</h3>
+					{{ form.select('Emitent', 'emitent_id', [{
+						'type' : 'empty',
+						'text' : 'Musíte vybrat emitenta'
+					}], emitents, emitent_id) }}
+					<br />
+					{{ form.select('Kategorie', 'category_id', [{
+						'type' : 'empty',
+						'text' : 'Musíte vybrat kategorii'
+					}], categories, category_id) }}
+					<br />
+					{{ form.multicheckbox('Štítky', 'label_ids', null, labels, label_ids) }}
+					<br /> #}
+					{# <h3>Cena</h3>
+						{{ form.input('Nominální hodnota', 'price', [{
+							'type' : 'empty',
+							'text' : 'Musíte vyplnit nominální hodnotu'
+						}, {
+							'type' : 'format',
+							'text' : 'Špatný formát nominální hodnoty'
+						}], price) }}
+						<br />
+						{{ form.select('Měna', 'currency_id', [{
+							'type' : 'empty',
+							'text' : 'Musíte vybrat měnu'
+						}], currencies, currency_id) }}
+						<br /> #}
+						{# <h3>Odměny</h3>
+							{{ form.select('Základ odměny', 'commission_type', [{
+								'type' : 'empty',
+								'text' : 'Musíte vybrat kategorii'
+							}], [{
+								'id'   : 0,
+								'name' : 'Nominální hodnota'
+							}, {
+								'id'   : 1,
+								'name' : 'Tržní hodnota'
+							}], commission_type) }}
+							<br />
+							{{ form.input('Affiliate odměna', 'commission_rate_affiliate', [{
+								'type' : 'empty',
+								'text' : 'Musíte vyplnit affiliate odměnu'
+							}, {
+								'type' : 'format',
+								'text' : 'Špatný formát affiliate odměny'
+							}], commission_rate_affiliate) }}
+							<br />
+							{{ form.input('Superaffiliate odměna', 'commission_rate_superaffiliate', [{
+								'type' : 'empty',
+								'text' : 'Musíte vyplnit superaffiliate odměnu'
+							}, {
+								'type' : 'format',
+								'text' : 'Špatný formát affiliate odměny'
+							}], commission_rate_affiliate) }}
+							<br /> #}
+							{# <h3>Množství</h3>
+								{{ form.input('Celkový počet kusů', 'pcs', [{
+									'type' : 'empty',
+									'text' : 'Musíte vyplnit celkový počet kusů'
+								}, {
+									'type' : 'format',
+									'text' : 'Špatný formát celkového počtu kusů'
+								}], pcs, 'number') }}
+								<br />
+								{{ form.input('Odečtených kusů', 'pcs_sub', [{
+									'type' : 'empty',
+									'text' : 'Musíte vyplnit odečtený počet kusů'
+								}, {
+									'type' : 'format',
+									'text' : 'Špatný formát odečteného počtu kusů'
+								}, {
+									'type' : 'valid',
+									'text' : 'Odečtených kusů je více než celkový počet'
+								}], pcs_sub, 'number') }}
+								<br />
+								{{ form.input('Minimální odběr', 'pcs_min', [{
+									'type' : 'empty',
+									'text' : 'Musíte vyplnit minimální odběr'
+								}, {
+									'type' : 'format',
+									'text' : 'Špatný formát minimálního odběru'
+								}, {
+									'type' : 'valid',
+									'text' : 'Minimální odběr je větší než zbylý počet'
+								}], pcs_min, 'number') }}
+								<br />#}
+								{# <h3>Termíny</h3>
+									{{ form.input('Počátek platnosti', 'valid_from_date', [{
+										'type' : 'empty',
+										'text' : 'Musíte vyplnit počátek platnosti'
+									}, {
+										'type' : 'format',
+										'text' : 'Špatný formát počátku platnosti'
+									}], valid_from_date) }}
+									<br />
+									{{ form.select('Typ platnosti', 'valid_type', [{
+										'type' : 'empty',
+										'text' : 'Musíte vybrat typ platnosti'
+									}], [{
+										'id'   : 0,
+										'name' : 'Datum konce'
+									}, {
+										'id'   : 1,
+										'name' : 'Počet dní'
+									}], valid_type) }}
+									<br />
+									{{ form.input('Konec platnosti', 'valid_to_date', [{
+										'type' : 'empty',
+										'text' : 'Musíte vyplnit konec platnosti'
+									}, {
+										'type' : 'format',
+										'text' : 'Špatný formát konce platnosti'
+									}, {
+										'type' : 'valid',
+										'text' : 'Konec platnosti je dříve než počátek'
+									}], valid_to_date) }}
+									<br />
+									{{ form.input('Platnost dní', 'valid_days', [{
+										'type' : 'empty',
+										'text' : 'Musíte vyplnit počet dní platnosti'
+									}, {
+										'type' : 'format',
+										'text' : 'Špatný formát počtu dní platnosti'
+									}], valid_days) }}
+									<br />
+									{{ form.input('Počátek prodeje', 'sell_from_date', [{
+										'type' : 'empty',
+										'text' : 'Musíte vyplnit počátek prodeje'
+									}, {
+										'type' : 'format',
+										'text' : 'Špatný formát počátku prodeje'
+									}], valid_from_date) }}
+									<br />
+									{{ form.input('Konec prodeje', 'sell_to_date', [{
+										'type' : 'empty',
+										'text' : 'Musíte vyplnit konec prodeje'
+									}, {
+										'type' : 'format',
+										'text' : 'Špatný formát konce prodeje'
+									}, {
+										'type' : 'valid',
+										'text' : 'Konec prodeje je dříve než počátek'
+									}], valid_to_date) }}
+									<br />
+									{{ form.input('Maturita', 'maturity_date', [{
+										'type' : 'empty',
+										'text' : 'Musíte vyplnit maturitu'
+									}, {
+										'type' : 'format',
+										'text' : 'Špatný formát maturity'
+									}], maturity_date) }}
+									<br /> #}
+									{# <h3>Základní informace</h3>
+										{{ form.input('Název', 'name', [{
+											'type' : 'empty',
+											'text' : 'Musíte vyplnit název'
+										}], name) }}
+										<br />
+										{{ form.textarea('Popis', 'text', [{
+											'type' : 'empty',
+											'text' : 'Musíte vyplnit text'
+										}], text) }}
+										<br />
+										{{ form.input('Úrok', 'rate', [{
+											'type' : 'empty',
+											'text' : 'Musíte vyplnit úrok'
+										}, {
+											'type' : 'format',
+											'text' : 'Špatný formát úroku'
+										}], rate) }}
+										<br />
+										{{ form.input('ISIN', 'isin', [{
+											'type' : 'empty',
+											'text' : 'Musíte vyplnit ISIN'
+										}], isin) }}
+										<br />
+										{{ form.input('IBAN', 'iban', [{
+											'type' : 'empty',
+											'text' : 'Musíte vyplnit IBAN'
+										}, {
+											'type' : 'format',
+											'text' : 'Špatný formát IBAN'
+										}], iban) }}
+										<br />
+										{{ form.hidden('id', id) }}
+										{{ form.submit('Uložit', 'Ukládám...') }}
+									</form> #}

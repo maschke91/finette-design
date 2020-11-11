@@ -1,0 +1,179 @@
+{% import 'macro/form.html.twig' as form %}
+<fieldset>
+	<legend class="legend">Základní údaje</legend>
+	<div class="row">
+		<div class="col-xs-12 col-md-6 col-lg-3">
+			{{ form.input('Název', 'name', [{
+				'type' : 'empty',
+				'text' : 'Musíte vyplnit název'
+			}], name) }}
+		</div>
+		<div class="col-xs-12 col-md-6 col-lg-3">
+			{{ form.input('IČ', 'crn', [{
+				'type' : 'empty',
+				'text' : 'Musíte vyplnit IČ'
+			}, {
+				'type' : 'format',
+				'text' : 'Špatný formát IČ'
+			}, {
+				'type' : 'valid',
+				'text' : 'Neplatné IČ'
+			}], crn, null, crn) }}
+		</div>
+		<div class="col-xs-12 col-md-6 col-lg-3">
+			{{ form.input('Spisová značka', 'file_no', [{
+				'type' : 'empty',
+				'text' : 'Musíte vyplnit spisovou značku'
+			}], file_no) }}
+		</div>
+		{% if role == 1 %}
+		<div class="col-xs-12 col-md-6 col-lg-3">
+			{{ form.input('Bankovní účet', 'bank', [{
+				'type' : 'empty',
+				'text' : 'Musíte vyplnit bankovní účet'
+			}, {
+				'type' : 'format',
+				'text' : 'Špatný formát bankovního účtu'
+			}, {
+				'type' : 'valid',
+				'text' : 'Neplatné bankovní účet'
+			}], bank) }}
+	</div>
+		{% endif %}
+	</div>
+</fieldset>
+<fieldset>
+	<legend class="legend">Kontaktní údaje</legend>
+	<div class="row">
+		<div class="col-xs-12 col-md-6 col-lg-3">
+			{{ form.input('E-Mail', 'email', [{
+				'type' : 'empty',
+				'text' : 'Musíte vyplnit e-mail'
+			}, {
+				'type' : 'format',
+				'text' : 'Špatný formát e-mailu'
+			}], email, 'email') }}
+		</div>
+		<div class="col-xs-12 col-md-6 col-lg-3">
+			{{ form.input('Telefonní číslo', 'phone', [{
+				'type' : 'empty',
+				'text' : 'Musíte vyplnit telefonní číslo'
+			}, {
+				'type' : 'format',
+				'text' : 'Špatný formát telefonního čísla'
+			}], phone, 'tel') }}
+		</div>
+	</div>
+</fieldset>
+<fieldset>
+	<legend class="legend">Adresa sídla</legend>
+	<div class="row">
+		<div class="col-xs-12 col-md-6 col-lg-3">
+			{{ form.input('Ulice', 'address_permanent_street', [{
+				'type' : 'empty',
+				'text' : 'Musíte vyplnit ulici'
+			}], address_permanent_street) }}
+		</div>
+		<div class="col-xs-12 col-md-6 col-lg-3">
+			{{ form.input('Číslo popisné a orientační', 'address_permanent_no', [{
+				'type' : 'empty',
+				'text' : 'Musíte vyplnit č.p. a č.o.'
+			}], address_permanent_no) }}
+		</div>
+		<div class="col-xs-12 col-md-6 col-lg-3">
+			{{ form.input('Upřesňující informace', 'address_permanent_addition', null, address_permanent_addition) }}
+		</div>
+		<div class="col-xs-12 col-md-6 col-lg-3">
+			{{ form.input('Město', 'address_permanent_city', [{
+				'type' : 'empty',
+				'text' : 'Musíte vyplnit město'
+			}], address_permanent_city) }}
+		</div>
+		<div class="col-xs-12 col-md-6 col-lg-3">
+			{{ form.input('PSČ', 'address_permanent_zip', [{
+				'type' : 'empty',
+				'text' : 'Musíte vyplnit PSČ'
+			}, {
+				'type' : 'format',
+				'text' : 'Špatný formát PSČ'
+			}], address_permanent_zip) }}
+		</div>
+		<div class="col-xs-12 col-md-6 col-lg-3">
+			{{ form.select('Země', 'address_permanent_country_id', [{
+				'type' : 'empty',
+				'text' : 'Musíte vybrat zemi'
+			}], countries, address_permanent_country_id) }}
+		</div>
+	</div>
+</fieldset>
+<fieldset>
+	<legend class="legend">Korespondenční adresa</legend>
+	{{ form.checkbox('Korespondenční adresa je jiná než trvalá', 'address_different', null, null, address_different, null, "addressDifferent") }}
+	<div class="row" data-toggle-addressDifferent="1">
+		<div class="col-xs-12 col-md-6 col-lg-3">
+			{{ form.input('Ulice', 'address_mailing_street', [{
+				'type' : 'empty',
+				'text' : 'Musíte vyplnit ulici'
+			}], address_mailing_street) }}
+		</div>
+		<div class="col-xs-12 col-md-6 col-lg-3">
+			{{ form.input('Číslo popisné a orientační', 'address_mailing_no', [{
+				'type' : 'empty',
+				'text' : 'Musíte vyplnit č.p. a č.o.'
+			}], address_mailing_no) }}
+		</div>
+		<div class="col-xs-12 col-md-6 col-lg-3">
+			{{ form.input('Upřesňující informace', 'address_mailing_addition', null, address_mailing_addition) }}
+		</div>
+		<div class="col-xs-12 col-md-6 col-lg-3">
+			{{ form.input('Město', 'address_mailing_city', [{
+				'type' : 'empty',
+				'text' : 'Musíte vyplnit město'
+			}], address_mailing_city) }}
+		</div>
+		<div class="col-xs-12 col-md-6 col-lg-3">
+			{{ form.input('PSČ', 'address_mailing_zip', [{
+				'type' : 'empty',
+				'text' : 'Musíte vyplnit PSČ'
+			}, {
+				'type' : 'format',
+				'text' : 'Špatný formát PSČ'
+			}], address_mailing_zip) }}
+		</div>
+		<div class="col-xs-12 col-md-6 col-lg-3">
+			{{ form.select('Země', 'address_mailing_country_id', [{
+				'type' : 'empty',
+				'text' : 'Musíte vybrat zemi'
+			}], countries, address_mailing_country_id) }}
+		</div>
+	</div>
+</fieldset>
+<fieldset>
+	<legend class="legend">Statutární zástupce</legend>
+	<div class="row">
+		<div class="col-xs-12 col-md-6 col-lg-3">
+			{{ form.input('Titul před jménem', 'statutory_representative_title_before', null, statutory_representative_title_before) }}
+		</div>
+		<div class="col-xs-12 col-md-6 col-lg-3">
+			{{ form.input('Křestní jméno', 'statutory_representative_name', [{
+				'type' : 'empty',
+				'text' : 'Musíte vyplnit křestní jméno'
+			}], statutory_representative_name) }}
+		</div>
+		<div class="col-xs-12 col-md-6 col-lg-3">
+			{{ form.input('Příjmení', 'statutory_representative_surname', [{
+				'type' : 'empty',
+				'text' : 'Musíte vyplnit příjmení'
+			}], statutory_representative_surname) }}
+		</div>
+		<div class="col-xs-12 col-md-6 col-lg-3">
+			{{ form.input('Titul za jménem', 'statutory_representative_title_after', null, statutory_representative_title_after) }}
+		</div>
+		<div class="col-xs-12 col-md-6 col-lg-3">
+			{{ form.input('Pozice', 'statutory_representative_position', [{
+				'type' : 'empty',
+				'text' : 'Musíte vyplnit příjmení'
+			}], statutory_representative_position) }}
+		</div>
+	</div>
+</fieldset>

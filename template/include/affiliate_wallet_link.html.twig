@@ -1,0 +1,31 @@
+ {% if role == 1 %}
+  <a href="/wallet" title="{% if affiliateHasContract %}Affiliátní smlouva v pořádku{% else %}Affiliátní smlouva nepřijata (viz nápověda str. 3){% endif %}" class="btn header__reward-button">
+    <span class="d-flex">
+      {# <span class="svg__container header__reward-icon">
+        <svg class="svg__icon svg__content">
+          <use xlink:href="/assets/img/svg/svg.svg#attach_money" x="0" y="0" width="100%" height="100%" />
+        </svg>
+      </span> #}
+      {# <span>({% if affiliateHasContract %}Y{% else %}N{% endif %}) {{ user.commission|number_format(2, ',', '.') }} CZK</span> #}
+      <span>
+      {% if affiliateHasContract %}
+        <span class="btn-icon btn-rounded boolean__icon boolean__state-true">
+          <span class="svg__container boolean__icon-svg">
+            <svg class="svg__icon svg__content">
+              <use xlink:href="/assets/img/svg/svg.svg#done" x="0" y="0" width="100%" height="100%" />
+            </svg>
+          </span>
+        </span>
+      {% else %}
+        <span class="btn-icon btn-rounded boolean__icon boolean__state-false">
+          <span class="svg__container boolean__icon-svg">
+            <svg class="svg__icon svg__content">
+              <use xlink:href="/assets/img/svg/svg.svg#close" x="0" y="0" width="100%" height="100%" />
+            </svg>
+          </span>
+        </span>
+      {% endif %}
+      {{ user.commission|number_format(2, ',', '.') }} CZK</span>
+    </span>
+  </a>
+{% endif %}

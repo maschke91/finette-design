@@ -1,0 +1,97 @@
+{% import 'macro/form.html.twig' as form %}
+
+<div class="modal__content-heading">
+	<span class="modal__content-title">Odeslání objednávky</span>
+</div>
+<form action="/order/ajax_send_save" data-name="order_send" class="full-width" novalidate>
+	<div class="modal__content-text overflow-auto">
+		<div class="row">
+			<div class="col-xs-12 col-md-6">
+				{{ form.input('Kód zásilky', 'tracking_no', [{
+					'type' : 'empty',
+					'text' : 'Musíte vyplnit kód zásilky'
+				}]) }}
+			</div>
+			<div class="col-xs-12 col-md-6">
+				{{ form.datepicker('Datum odeslání', 'sent_date', [{
+					'type' : 'empty',
+					'text' : 'Musíte vyplnit datum odeslání'
+				}, {
+					'type' : 'format',
+					'text' : 'Špatný formát data odeslání'
+        }, {
+          'type' : 'valid-min',
+          'text' : 'Datum odeslání je dříve než vytvoření objednávky'
+        }, {
+          'type' : 'valid-max',
+          'text' : 'Datum odeslání je později než dnes'
+				}]) }}
+			</div>
+			<div class="col-xs-12 col-md-6">
+				{{ form.select('Služba', 'delivery_type', [{
+					'type' : 'empty',
+					'text' : 'Musíte vybrat službu'
+				}], [{
+					'id'   : 0,
+					'name' : 'Česká pošta'
+				}, {
+					'id'   : 1,
+					'name' : 'PPL'
+				}, {
+					'id'   : 2,
+					'name' : 'DPD'
+				}, {
+					'id'   : 3,
+					'name' : 'DHL'
+				}, {
+					'id'   : 4,
+					'name' : 'GLS'
+				}, {
+					'id'   : 5,
+					'name' : 'Zásilkovna'
+				}, {
+					'id'   : 6,
+					'name' : 'jiné...'
+				}], null, 'deliveryType') }}
+			</div>
+			<div class="col-xs-12 col-md-6" data-toggle-deliveryType="6">
+				{{ form.input('Název služby', 'delivery_custom', [{
+					'type' : 'empty',
+					'text' : 'Musíte vyplnit název služby'
+				}]) }}
+			</div>
+		</div>
+		{% if series %}
+		<div>
+			{{ form.range('Čísla dokumentů', 'series_no', pcs, num) }}
+		</div>
+		{% endif %}
+	</div>
+	<div class="modal__content-footer">
+		{{ form.hidden('id', id) }}
+		{{ form.hidden('series', series) }}
+		<a href="#" class="btn modal__button--cancel">Zrušit</a>
+		{{ form.submit('Uložit', 'Ukládám...') }}
+	</div>
+</form>
+
+
+{#<h3>Odeslání objednávky</h3>
+	<form action="/order/ajax_send_save" data-name="order_send" novalidate>
+		{{ form.input('Kód zásilky', 'tracking_no', [{
+			'type' : 'empty',
+			'text' : 'Musíte vyplnit kód zásilky'
+		}]) }}
+		<br />
+		{{ form.input('Datum odeslání', 'sent_date', [{
+			'type' : 'empty',
+			'text' : 'Musíte vyplnit datum odeslání'
+		}, {
+			'type' : 'format',
+			'text' : 'Špatný formát data odeslání'
+		}]) }}
+		<br />
+		{{ form.hidden('id', id) }}
+		{{ form.submit('Uložit', 'Ukládám...') }}
+		<a href="#" class="modal__button--cancel">Zrušit</a>
+	</form>#}

@@ -1,0 +1,10 @@
+<nav class="breadcrumbs__wrap order__navigation">
+  <span class="breadcrumbs__item navigation__link">Majetek</span>
+  {% for breadcrumb in breadcrumbs %}
+  {% if breadcrumb.link %}
+  <a href="/property/{{ breadcrumb.link ~ breadcrumb.param }}" title="{{ breadcrumb.title }}" class="breadcrumbs__item navigation__link"><span>{{ breadcrumb.title }}</span></a>
+  {% else %}
+  <div class="breadcrumbs__item navigation__link"><span>{{ breadcrumb.title }}</span></div>
+  {% endif %}
+  {% endfor %}
+</nav>

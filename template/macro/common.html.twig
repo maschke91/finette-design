@@ -1,0 +1,65 @@
+{#
+  Badge
+  -----
+#}
+{% macro badge(value, color = '') %}
+
+{% set color = color ? 'role-' ~ color %}
+
+  <span class="role__badge {{ color }}">
+    {{ value }}
+  </span>
+  
+{% endmacro %}
+{# 
+  Product States
+  --------------
+#}
+{% macro productStates(state) %}
+  
+  {% set types = [{
+    "state" : "start",
+    "text"  : "Prodej začíná",
+    "value"  : "1.4.2019"
+  }, {  
+    "state" : "time",
+    "text"  : "Prodej bude ukončen",
+    "value"  : "4.9.2019"
+  }, {
+    "state" : "end",
+    "text"  : "Prodej ukončen"
+  }] %}
+
+  <div class="product__states-wrap">
+    <div class="product__states-item sale-{{ types[state].state }}">
+      <span class="svg__container product__states-icon">
+        <svg class="svg__icon svg__content">
+          <use xlink:href="/assets/img/svg/svg.svg#announcement" x="0" y="0" width="100%" height="100%" />
+        </svg>
+      </span>
+      <span class="product__states-title">{{ types[state].text }} {% if types[state].value %}<strong>{{ types[state].value }}</strong>{% endif %}</span>
+    </div>
+  </div>
+
+{% endmacro %}
+{# 
+  Boolean icon
+  --------------
+#}
+{% macro booleanIcon(state) %}
+  
+  {% set types = [{
+    "state"  : "true"
+  }, { 
+    "state"  : "false"
+  }] %}
+
+  <span class="btn-icon btn-rounded boolean__icon boolean__state-{% if types[state].state == 'true' %}true{% else %}false{% endif %}">
+    <span class="svg__container boolean__icon-svg">
+      <svg class="svg__icon svg__content">
+        <use xlink:href="/assets/img/svg/svg.svg#{% if types[state].state == 'true' %}done{% else %}close{% endif %}" x="0" y="0" width="100%" height="100%" />
+      </svg>
+    </span>
+  </span>
+
+{% endmacro %}

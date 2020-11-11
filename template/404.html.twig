@@ -1,0 +1,16 @@
+{% extends 'layout/no_menu.html.twig' %}
+
+{% block content %}
+<section class="layout__box-wrap">
+  <div class="layout__box-content text-center">
+    <div class="layout__box-img">
+      <img src="/assets/img/logo{{ subdom }}.svg" alt="Finettte s.r.o." />
+    </div>
+    <h1 class="layout__box-title">Chyba 404 - Stránka nenalezena</h2>
+    <div class="error__page-text py-4">
+      {# <p>Stránka #} <code>{{ url }}</code> {# neexistuje. </p>#}
+    </div>
+    <p class="m-0 p-0">Pokračujte na <a href="/" title="Hlavní stranu">hlavní stranu</a>.</p>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,131 @@
+ {% extends 'layout/menu.html.twig' %}
+
+{% import 'macro/form.html.twig' as form %}
+
+{% block content %}
+<section class="page__content bg-white box__shadow">
+<div class="breadcrumbs__wrap">
+		<span class="breadcrumbs__item">Pozvánky</span><span class="breadcrumbs__item active">Editace uživatele</span>
+	</div>
+	<div class="section">
+		<div class="tabs__wrap">
+			<nav class="tab__navigation-wrap">
+				<button data-tab="tab-1" class="btn tab__navigation-button active">Uživatelé</button>
+				{% if role_affiliate %}
+				<button data-tab="tab-2" class="btn tab__navigation-button">Provize</button>
+				{% endif %}
+			</nav>
+			<div class="tab__boxes-wrap">
+				<div class="tab__box-content text-center active" data-content-box="tab-1">
+					<form action="/user/ajax_save" data-name="user_detail" novalidate>
+						<div class="row">
+							<div class="col-xs-12 col-sm-8 col-md-6 px-0">
+								{{ form.input('Datum vytvoření', 'timestamp', null, timestamp, null, true) }}
+							</div>
+							<div class="col-xs-12 col-sm-8 col-md-6 px-0">
+								{{ form.input('E-Mail', 'email', null, email, null, true) }}
+							</div>
+							<div class="col-xs-12 col-sm-8 col-md-6 px-0">
+								{{ form.select('Superaffiliate', 'superaffiliate_id', null, affiliates, superaffiliate_id, null, true) }}
+							</div>
+							<div class="col-xs-12 col-sm-8 col-md-6 px-0">
+								{{ form.checkbox('Sám sobě', 'self_superaffiliate', null, self_superaffiliate) }}
+							</div>
+							<div class="col-xs-12">
+								{{ form.multicheckbox('Role', 'roles', [{
+									'type' : 'empty',
+									'text' : 'Musíte vybrat roli'
+								}], [{
+									'id'   : 'role_customer',
+									'name' : 'Customer'
+								}, {
+									'id'   : 'role_affiliate',
+									'name' : 'Affiliate'
+								}, {
+									'id'   : 'role_emitent',
+									'name' : 'Emitent'
+								}, {
+									'id'   : 'role_spectator',
+									'name' : 'Spectator'
+								}, {
+									'id'   : 'role_provider',
+									'name' : 'Provider'
+								}], roles) }}
+							</div>
+						</div>
+						<div class="form__button-wrap button-wrap-horizontal">
+							{{ form.hidden('id', id) }}
+							{{ form.submit('Uložit', 'Ukládám...') }}
+						</div>
+					</form>
+				</div>
+				{% if role_affiliate %}
+				<div class="tab__box-content text-center" data-content-box="tab-2">
+					<form action="/user/ajax_rates" data-name="user_rates" class="full-width">
+						<div class="row">
+							<!-- <div class="col-xs-12 col-sm-8 col-md-6 px-0"> -->
+							<div class="col-xs-12">
+								{{ form.rates('commission_rates', products, rates) }}
+							</div>
+						</div>
+						<div class="form__button-wrap button-wrap-horizontal">
+							{{ form.hidden('user_id', id) }}
+							{{ form.submit('Uložit', 'Ukládám...') }}
+						</div>
+					</form>
+					<form action="/user/ajax_contract" data-name="user_contract" enctype="multipart/form-data" class="full-width">
+						{{ form.contract('contract', profiles, contracts) }}
+						<div class="form__button-wrap button-wrap-horizontal">
+								{{ form.submit('Uložit', 'Ukládám...') }}
+						</div>
+					</form>
+				</div>
+				{% endif %}
+			</div>
+		</div>
+	</div>
+</section>
+{% endblock %}
+
+{# <h1>Uživatelé</h1>
+	<h2>Detail</h2>
+	<form action="/user/ajax_save" data-name="user_detail" novalidate>
+		{{ form.input('Datum vytvoření', 'timestamp', null, timestamp, null, true) }}
+		<br />
+		{{ form.input('E-Mail', 'email', null, email, null, true) }}
+		<br />
+		{{ form.select('Superaffiliate', 'superaffiliate_id', null, affiliates, superaffiliate_id) }}
+		{{ form.checkbox('Sám sobě', 'self_superaffiliate', null, self_superaffiliate) }}
+		<br />
+		{{ form.multicheckbox('Role', 'roles', [{
+			'type' : 'empty',
+			'text' : 'Musíte vybrat roli'
+		}], [{
+			'id'   : 'role_customer',
+			'name' : 'Customer'
+		}, {
+			'id'   : 'role_affiliate',
+			'name' : 'Affiliate'
+		}, {
+			'id'   : 'role_emitent',
+			'name' : 'Emitent'
+		}, {
+			'id'   : 'role_spectator',
+			'name' : 'Spectator'
+		}, {
+			'id'   : 'role_provider',
+			'name' : 'Provider'
+		}], roles) }}
+		<br />
+		{{ form.hidden('id', id) }}
+		{{ form.submit('Uložit', 'Ukládám...') }}
+	</form>
+	{% if role_affiliate %}
+	<h2>Provize</h2>
+	<form action="/user/ajax_rates" data-name="user_rates">
+		{{ form.rates('commission_rates', products, rates) }}
+		<br />
+		{{ form.hidden('user_id', id) }}
+		{{ form.submit('Uložit', 'Ukládám...') }}
+	</form>
+	{% endif %} #}

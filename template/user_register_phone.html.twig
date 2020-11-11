@@ -1,0 +1,47 @@
+{% extends 'layout/no_menu.html.twig' %}
+
+{% import 'macro/form.html.twig' as form %}
+
+{% block content %}
+<section class="layout__box-wrap">
+  <div class="layout__box-content">
+    <div class="layout__box-img">
+      <img src="/assets/img/logo{{ subdom }}.svg" alt="Finettte s.r.o." />
+    </div>
+    <h2 class="layout__box-title">Registrace</h2>
+    <form action="/user/ajax_register_phone" data-name="user_register_phone" novalidate>
+      {{ form.input('Telefonní číslo', 'phone', [{
+        'type' : 'empty',
+        'text' : 'Musíte vyplnit telefonní číslo'
+      }, {
+        'type' : 'format',
+        'text' : 'Špatný formát telefonního čísla'
+      }, {
+        'type' : 'valid',
+        'text' : 'Toto telefonní číslo je již registrováno'
+      }], null, 'tel', false, 'tel') }}
+      <div class="form__button-wrap button-wrap-vertical">
+        {{ form.hidden('token', token) }}
+        {{ form.submit('Pokračovat', 'Pokračuji...') }}
+      </div>
+    </form>
+  </div>
+</section>
+{% endblock %}
+{#  <h1>Registrace</h1>
+  <form action="/user/ajax_register_phone" data-name="user_register_phone" novalidate>
+    {{ form.input('Telefonní číslo', 'phone', [{
+      'type' : 'empty',
+      'text' : 'Musíte vyplnit telefonní číslo'
+    }, {
+      'type' : 'format',
+      'text' : 'Špatný formát telefonního čísla'
+    }, {
+      'type' : 'valid',
+      'text' : 'Toto telefonní číslo je již registrováno'
+    }], null, 'tel') }}
+    <br />
+    {{ form.hidden('token', token) }}
+    {{ form.submit('Pokračovat', 'Pokračuji...') }}
+  </form> #}
+  

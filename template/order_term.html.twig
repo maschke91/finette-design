@@ -1,0 +1,29 @@
+{% extends 'layout/menu.html.twig' %}
+
+{% import 'macro/form.html.twig' as form %}
+
+{% block content %}
+<section class="page__content bg-white box__shadow">
+{% include "include/order_nav.html.twig" %}
+  <div class="px-4 text-center">
+    <form action="/order/ajax_term" data-name="order_term" class="text-left">
+      {{ form.datepicker('Termín platby', 'term_date', [{
+        'type' : 'empty',
+        'text' : 'Musíte vyplnit termín platby'
+      }, {
+        'type' : 'format',
+        'text' : 'Špatný formát termínu platby'
+      }, {
+        'type' : 'valid-min',
+        'text' : 'Termín platby je dříve než dnes'
+      }, {
+        'type' : 'valid-max',
+        'text' : 'Termín platby je později než konec prodeje'
+      }], today) }}
+      <div class="form__button-wrap button-wrap-horizontal">
+        {{ form.submit('Potvrdit', 'Potvrzuji...') }}
+      </div>
+    </form>
+  </div>
+</section>
+{% endblock %}

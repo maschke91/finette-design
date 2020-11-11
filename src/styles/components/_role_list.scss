@@ -1,0 +1,45 @@
+// Role list
+.choose__list {
+  display: inline-block;
+  max-width: 250px;
+  width: 100%;
+  list-style: none;
+  padding-left: 0;
+  margin-top: 20px;
+  margin-bottom: 0;
+
+  .choose__list-item {
+    cursor: pointer;
+    padding: 13px 4px;
+    position: relative;
+    font-weight: 400;
+    @include transition(321ms);
+    border-bottom: 1px solid $grey-light;
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    &:after {
+      content: '';
+      display: block;
+      width: 24px;
+      height: 24px;
+      position: absolute;
+      right: 8px;
+      top: calc(50% - 12px);
+      background-image: url('/assets/img/svg/chevron_right.svg');
+      background-position: center;
+      background-size: contain;
+      @include transition(321ms);
+    }
+
+    &:hover {
+      color: $primary-color;
+
+      &:after {
+        transform: translateX(10px);
+      }
+    }
+  }
+}

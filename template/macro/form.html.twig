@@ -1,0 +1,413 @@
+{#
+  Input validation messages
+  -------------------------
+#}
+{% macro errors(name, messages) %}
+  {% for message in messages %}
+  <span data-validate data-invalid-{{ name }}="{{ message.type }}" class="error__msg-wrap">{{ message.text }}</span>
+  {% endfor %}
+{% endmacro %}
+
+{#
+  Input
+  -----
+#}
+{% macro input(title, name, messages = [], value = '', type = 'text', disabled = false, icon = '') %}
+{% import _self as this %}
+  {% set disabled = disabled ? 'disabled' %}
+
+  {# {% if title %}
+  <label>{{ title }}</label>
+  {% endif %}
+
+  <input name="{{ name }}" type="{{ type }}" value="{{ value }}" {{ disabled }} />
+
+  {% if messages %}
+  {{ this.errors(name, messages) }}
+  {% endif %} #}
+
+  <div class="form__input-wrap {% if icon %}input-with-icon{% endif %} {% if type == 'hidden' %}hidden__input{% endif %}">
+    <input type="{{ type }}" name="{{ name }}" id="{{ name }}" value="{{ value }}" class="form__input" {{ disabled }} />
+    {% if icon %}
+    <span class="svg__container form__input-icon">
+      <svg class="svg__icon svg__content">
+        <use xlink:href="/assets/img/svg/svg.svg#{{ icon }}" x="0" y="0" width="100%" height="100%" />
+      </svg>
+    </span>
+    {% endif %}
+    <label class="form__input-label" for="{{ name }}">{{ title }}</label>
+    <span class="form__input-status"></span>
+    {% if messages %}
+      {{ this.errors(name, messages) }}
+    {% endif %}
+  </div>
+{% endmacro %}
+
+{#
+  Hidden input
+  ------------
+#}
+{% macro hidden(name, value = '') %}
+{% import _self as this %}
+  {{ this.input('', name, [], value, 'hidden') }}
+{% endmacro %}
+
+{#
+  Submit button
+  -------------
+#}
+{% macro submit(title, action = '', id = '') %}
+  <button type="submit" value="{{ title }}" data-value-default="{{ title }}" data-value-action="{{ action }}" class="btn btn-colored primary-bg" id="{{ id }}">{{ title }}</button>
+{% endmacro %}
+
+{#
+  Textarea
+  --------
+#}
+{% macro textarea(title, name, messages = [], value = '', disabled = false) %}
+{% import _self as this %}
+  {% set disabled = disabled ? 'disabled' %}
+  {# {% if title %}
+  <label>{{ title }}</label>
+  {% endif %}
+
+  <textarea name="{{ name }}" {{ disabled }}>{{ value }}</textarea>
+
+  {% if messages %}
+    {{ this.errors(name, messages) }}
+  {% endif %} #}
+
+  <div class="form__input-wrap">
+    <textarea name="{{ name }}" id="{{ name }}" class="form__input" {{ disabled }}>{{ value }}</textarea>
+    <label class="form__input-label" for="{{ name }}">{{ title }}</label>
+    <span class="form__input-status"></span>
+
+    {% if messages %}
+      {{ this.errors(name, messages) }}
+    {% endif %}
+  </div>
+{% endmacro %}
+{#
+  Select
+  ------
+#}
+{% macro select(title, name, messages = [], options = [], value = null, toggleTarget = null, search = false) %}
+{% import _self as this %}
+  <div class="form__input-wrap">
+<select name="{{ name }}" id="{{ name }}" class="{% if toggleTarget %}js-toggle{% endif %} js-select form__select" {% if toggleTarget %} data-toggle-name="{{ toggleTarget }}" {% endif %} {% if search == true %}data-search {% endif %}>
+      <option value="" data-value="">- vyberte -</option>
+
+      {% for option in options %}
+        {% if option is iterable %}
+          {% set selected = value is same as (option.id) ? 'selected' %}
+          <option value="{{ option.id }}" {{ selected }} data-value="{{ option.id }}">{{ option.name }}</option>
+        {% else %}
+          {% set selected = value == option ? 'selected' %}
+          <option value="{{ option }}" {{ selected }} data-value="{{ option }}">{{ option }}</option>
+        {% endif %}
+      {% endfor %}
+
+    </select>
+    <label class="form__input-label" for="{{ name }}">{{ title }}</label>
+    <span class="form__input-status"></span>
+    {% if messages %}
+      {{ this.errors(name, messages) }}
+    {% endif %}
+  </div>
+{# <label>{{ title }}</label>
+  <select name="{{ name }}">
+    <option value="">- vyberte -</option>
+
+    {% for option in options %}
+      {% if option is iterable %}
+        {% set selected = value is same as (option.id) ? 'selected' %}
+        <option value="{{ option.id }}" {{ selected }}>{{ option.name }}</option>
+      {% else %}
+        {% set selected = value == option ? 'selected' %}
+        <option value="{{ option }}" {{ selected }}>{{ option }}</option>
+      {% endif %}
+    {% endfor %}
+
+  </select> #}
+
+  {#
+  <div class="form__input-wrap">
+    <input class="js-select select__hidden-input" type="hidden" name="{{ name }}" value="{{ value }}" />
+    <input type="text" data-view readonly id="{{ name }}" class="form__input select__input" />
+    <label class="form__input-label" data-toggle for="{{ name }}">{{ title }}</label>
+    <span class="svg__container select__arrow">
+      <svg class="svg__icon svg__content">
+        <use xlink:href="/assets/img/svg/svg.svg#expand_bottom" x="0" y="0" width="100%" height="100%" />
+      </svg>
+    </span>
+    <span class="form__input-status"></span>
+    {% if messages %}
+      {{ this.errors(name, messages) }}
+    {% endif %}
+      <ul data-options class="select__list-wrap">
+        <li class="select__list-item" data-value="">- vyberte -</li>
+        {% for option in options %}
+        {% if option is iterable %}
+          {% set selected = value is same as (option.id) ? 'selected' %}
+          <li class="select__list-item" data-value="{{ option.id }}" {{ selected }}>{{ option.name }}</li>
+        {% else %}
+          {% set selected = value == option ? 'selected' %}
+          <li class="select__list-item" data-value="{{ option }}" {{ selected }}>{{ option }}</li>
+        {% endif %}
+      {% endfor %}
+      </ul>
+  </div>
+  #}
+
+{% endmacro %}
+{#
+  Checkbox
+  --------
+#}
+{% macro checkbox(title, name, messages = [], checked = false, value = '', i = 0, toggleTarget = null) %}
+  {% set checked = checked ? 'checked' %}
+  {% set id = i ? name ~ i : name %}
+  {% import _self as this %}
+ {#  <input type="checkbox" name="{{ name }}" {{ checked }} />
+  <label>{{ title }}</label> #}
+  <div class="form__input-wrap form__input-checkbox no-border-wrap">
+    <input type="checkbox" name="{{ name }}" id="{{ id }}" {% if value is not same as ('') %} value="{{ value }}" {% endif %} class="form__input {% if toggleTarget %}js-toggle{% endif %}" {% if toggleTarget %}data-toggle-name="{{ toggleTarget }}"{% endif %} {{ checked }} />
+    <label class="form__checkbox-label" for="{{ id }}">{{ title }}</label>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="checkbox__state-checked"><path d="M9 21.035l-9-8.638 2.791-2.87 6.156 5.874 12.21-12.436 2.843 2.817z"/></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="checkbox__state-indeterminate"><path d="M0 10h24v4h-24z"/></svg>
+    {% if messages %}
+      {{ this.errors(name, messages) }}
+    {% endif %}
+  </div>
+{% endmacro %}
+{#
+  Multicheckbox
+  -------------
+#}
+{% macro multicheckbox(title, name, messages = [], options = [], value = []) %}
+{% import _self as this %}
+  {# <label>{{ title }}</label> #}
+  <div class="relative">
+    {% for option in options %}
+    {% set checked = option.id in value|split(',') ? 'checked' %}
+    {# <input type="checkbox" name="{{ name }}" value="{{ option.id }}" {{ checked }} />
+    <label>{{ option.name }}</label>
+    <br /> #}
+    <div class="d-block d-sm-inline-block mr-0 mr-sm-4">
+        {{ this.checkbox(option.name, name, null, checked, option.id, option.id) }}
+    </div>
+    {% endfor %}
+
+    {% if messages %}
+      {{ this.errors(name, messages) }}
+    {% endif %}
+  </div>
+{% endmacro %}
+{#
+  Radiobutton
+  -----------
+#}
+{% macro radiobutton(title, group, name, value, checked = false) %}
+  <div class="form__input-wrap no-border-wrap">
+    <input type="radio" name="{{ group }}" value="{{ value }}" id="{{ name }}" class="form__input" {{ checked }} />
+    <label class="form__radio-label" for="{{ name }}">{{ title }}</label>
+    <svg width="12" height="12" viewBox="-1 -1 10 10" version="1" svg xmlns="http://www.w3.org/2000/svg">
+      <g>
+        <circle cx="4" cy="4" r="4" stroke-width="1"/>
+      </g>
+    </svg>
+  </div>
+{% endmacro %}
+{#
+    File input
+    --------------
+ #}
+{% macro fileinput(label, name, messages = [], icon = true) %}
+<div class="form__input-wrap {% if icon == true %}input-with-icon{% endif %}" data-label="{{ label }}">
+  <input name="{{ name }}" id="{{ name }}" type="file" class="form__input js-file">
+  {% if icon == true %}
+  <span class="svg__container form__input-icon">
+    <svg class="svg__icon svg__content">
+      <use xlink:href="/assets/img/svg/svg.svg#file" x="0" y="0" width="100%" height="100%" />
+    </svg>
+  </span>
+  {% endif %}
+  <label  for="{{ name }}" class="form__input-label js-file__label">{{ label }}</label>
+  <span class="input__file-name"></span>
+  <button data-file-delete type="button" class="btn btn-icon">
+    <span class="svg__container">
+      <svg class="svg__icon svg__content">
+        <use xlink:href="/assets/img/svg/svg.svg#close" x="0" y="0" width="100%" height="100%" />
+      </svg>
+    </span>
+  </button>
+
+  {% if messages %}
+      {{ this.errors(name, messages) }}
+    {% endif %}
+
+</div>
+{% endmacro %}
+{#
+  Datepicker
+  ----------
+ #}
+ {% macro datepicker(title, name, messages = [], value = '', i = 0, disabled = false) %}
+ {% import _self as this %}
+ {% set id = i ? name ~ i : name %}
+ {% set disabled = disabled ? 'disabled' %}
+  <div class="form__input-wrap input-with-icon form__input-datepicker">
+    <input type="text" value="{{ value }}" data-toggle="datepicker" name="{{ name }}" id="{{ id }}" class="form__input" {{ disabled }} />
+    <span class="svg__container form__input-icon">
+      <svg class="svg__icon svg__content">
+        <use xlink:href="/assets/img/svg/svg.svg#calendar" x="0" y="0" width="100%" height="100%" />
+      </svg>
+    </span>
+    <label class="form__input-label" for="{{ id }}">{{ title }}</label>
+    <span class="form__input-status"></span>
+    {% if messages %}
+      {{ this.errors(name, messages) }}
+    {% endif %}
+  </div>
+ {% endmacro %}
+{#
+  Rates
+  -----
+#}
+{% macro rates(name, options = [], values = [], default = []) %}
+{% import _self as this %}
+  <div data-rates-name="{{ name }}">
+		{{ this.hidden(name) }}
+		<div class="text-right">
+				<a data-rates-button="check" href="#" class="btn">Označit vše</a>
+				<a data-rates-button="uncheck" href="#" class="btn">Odznačit vše</a>
+		</div>
+    <table class="table responsive-table">
+      <tbody>
+      {% for option in options %}
+      {% set checked = values[option.id] is not empty %}
+      <tr data-rates-row>
+        <td>
+          {{ this.checkbox(option.name, option.id, null, checked) }}
+        <td>
+        <td data-rates-column>
+          {{ this.input('Affiliate odměna', option.id ~ '-commission_rate_affiliate', [{
+            'type' : 'empty',
+            'text' : 'Musíte vyplnit affiliate odměnu'
+          }, {
+            'type' : 'format',
+            'text' : 'Špatný formát affiliate odměny'
+          }], values[option.id].commission_rate_affiliate ?? option.commission_rate_affiliate ?? default[0]) }}
+        <td>
+        <td data-rates-column>
+          {{ this.input('Superaffiliate odměna', option.id ~ '-commission_rate_superaffiliate', [{
+            'type' : 'empty',
+            'text' : 'Musíte vyplnit superaffiliate odměnu'
+          }, {
+            'type' : 'format',
+            'text' : 'Špatný formát superaffiliate odměny'
+          }], values[option.id].commission_rate_superaffiliate ?? option.commission_rate_superaffiliate ?? default[1]) }}
+        <td>
+      </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endmacro %}
+{#
+  Range
+  -----
+#}
+{% macro range(title, name, i, series) %}
+{% import _self as this %}
+<div data-range-name="{{ name }}">
+	{{ this.hidden(name) }}
+	<div class="row">
+		{% for current in 1..i %}
+		<div class="col-xs-12 col-sm-6 col-md-3">
+			<div class="d-flex">
+				<div class="mr-2">{{ current }}.</div>
+				<div data-range-column>
+					{{ this.input('č. dok.', current ~ '-series_no', [{
+						'type' : 'empty',
+						'text' : 'Musíte vyplnit číslo dokumentu'
+					}, {
+						'type' : 'format',
+						'text' : 'Špatný formát čísla dokumentu'
+					}], series + current) }}
+				</div>
+			</div>
+		</div>
+		{% endfor %}
+	</div>
+</div>
+{% endmacro %}
+{#
+  Contract
+  --------
+#}
+{% macro contract(name, options = [], values = []) %}
+{% import _self as this %}
+  {% set names = [] %}
+  <div>
+    <table class="table responsive-table">
+      <tbody>
+        {% for option in options %}
+        <tr>
+          <td>
+            <p class="pt-0">{{ option.name }}</p>
+          </td>
+          {% if values[option.id] %}
+          <td>
+            <a target="_blank" href="/file/download/{{ values[option.id].id }}/affiliate">Smlouva</a>
+          </td>
+          {% else %}
+          <td>
+          {% set names = names | merge([option.id ~ '-contract']) %}
+          {% set names = names | merge([option.id ~ '-bank']) %}
+
+          <div class="form__input-wrap input-with-icon">
+            <input name="{{ option.id ~ '-contract' }}" id="{{ option.id ~ '-contract' }}" type="file" class="form__input js-file">
+            <span class="svg__container form__input-icon">
+              <svg class="svg__icon svg__content">
+                <use xlink:href="/assets/img/svg/svg.svg#file" x="0" y="0" width="100%" height="100%" />
+              </svg>
+            </span>
+            <label  for="{{ option.id ~ '-contract' }}" class="form__input-label js-file__label">Vyberte soubor...</label>
+            <span class="input__file-name"></span>
+            <button data-file-delete type="button" class="btn btn-icon">
+              <span class="svg__container">
+                <svg class="svg__icon svg__content">
+                  <use xlink:href="/assets/img/svg/svg.svg#close" x="0" y="0" width="100%" height="100%" />
+                </svg>
+              </span>
+            </button>
+          </div>
+
+        {#     <div class="form__input-wrap">
+              <input name="{{ option.id ~ '-contract' }}" id="{{ option.id ~ '-contract' }}" type="file" class="form__input" />
+              <label tabindex="0" for="{{ option.id ~ '-contract' }}" class="form__input-label">Vyberte soubor...</label>
+              <span class="input__file-name">
+            </div> #}
+            {# <input type="file" name="{{ option.id ~ '-contract' }}" /> #}
+          </td>
+          <td>
+          {{ this.input('Bankovní účet', option.id ~ '-bank', [{
+            'type' : 'empty',
+            'text' : 'Musíte vyplnit bankovní účet'
+          }, {
+            'type' : 'format',
+            'text' : 'Špatný formát bankovního účtu'
+          }, {
+            'type' : 'valid',
+            'text' : 'Neplatný bankovní účet'
+          }], option.bank) }}
+          </td>
+          {% endif %}
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {{ this.hidden(name, names|join(',')) }}
+  </div>
+{% endmacro %}

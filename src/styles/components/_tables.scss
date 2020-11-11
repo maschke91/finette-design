@@ -1,0 +1,179 @@
+// Table component
+.table {
+	width: 100%;
+	max-width: 100%;
+	margin-bottom: 0;
+	background-color: transparent;
+	border-collapse: collapse;
+	position: relative;
+
+	thead {
+		background-color: #fff;
+	}
+
+	td,th {
+		padding: 12px 8px;
+		vertical-align: middle;
+		font-size: 14px;
+    border-bottom: 1px solid #dee2e6;
+    line-height: 36px;
+	}
+	
+	th {
+		font-weight: 400;
+		vertical-align: middle;
+		line-height: 36px;
+	}
+	
+	.error__msg-wrap {
+		font-weight: 300;
+	}
+	
+	.table__no-items {
+		text-align: center;
+		padding: 16px 0;
+		
+		span {
+			display: block;
+			width: 100%
+		}
+	}
+	
+	&.width-auto {
+		width: auto;
+	}
+}
+
+.table__thead-bordered {
+	th {
+		border-bottom: 1px solid #7f8082;
+		padding-top: 0;
+		padding-bottom: 0;
+	}
+}
+
+@media screen and (max-width: $md) {
+	.responsive-table {
+
+		display: block;
+
+		thead, tbody, tr {
+			display: block;
+		}
+
+		thead tr:first-child {
+			position: absolute;
+			top: -9999px;
+			left: -9999px;
+		}
+		
+		.table__filters-row {
+			display: block;
+			
+			th {
+				display: block;
+			}
+		}
+		
+		tr {
+			border: 1px solid $grey-light;
+			border-bottom: none;
+			display: block;
+		}
+		
+		tr + tr {
+			margin-top: 16px;
+		}
+		
+		td {
+			border: none;
+			display: flex;
+			justify-content: flex-start;
+			align-items: center;
+			border-bottom: 1px solid $grey-light;
+			padding-left: 50%;
+			position: relative;
+			font-size: 13px;
+			
+			&:before {
+				content: attr(data-label);
+				font-size: 13px;
+				display: inline-block;
+				text-align: left;
+				font-weight: 400;
+				line-height: 1.5;
+				margin-left: -100%;
+				width: 100%;
+				position: relative;
+				z-index: 1;
+			}
+		}
+		
+		.responsive__title-block {
+			display: block;
+			padding-left: 8px;
+			
+			&:before {
+				display: block;
+				margin: 0 0 4px;
+			}
+		}
+
+		//  Long text in td
+		.td-long-text {
+			display: block;
+			padding: 0;
+			padding: 12px 8px;
+			text-align: center;
+
+			&:before {
+				margin-left: 0;
+				display: block;
+				text-align: left;
+			}
+		}
+			
+	}
+}
+.table.table__tr-hover tbody tr:hover td a {
+  color: #0ca6d3;
+}
+.table td.table__td-link {
+  padding: 0;
+
+  a {
+    display: block;
+    padding: 12px 8px;
+  }
+}
+
+.table_row--overline td {
+	text-decoration: line-through;
+}
+
+// 	 Fixed header animation
+//  jQuery plugin: https://github.com/simonsmith/jquery.stickyTableHeader
+.is-scrolling {
+  animation-duration: .8s;
+	animation-name: tableHeader;
+	
+	//transition: all 1337ms ease-in-out;
+}
+
+@keyframes tableHeader {
+  0%   { transform: translateY(0px); }
+  50%   { transform: translateY(-5px); }
+  100% { transform: translateY(0px); }
+}
+
+/** Property table */
+.property-table td, .property-table th {
+	padding: 0;
+}
+.property-table a {
+	display: block;
+	padding: 15px 8px;
+}
+.property-table tr:hover a {
+	color: $primary-color !important
+}

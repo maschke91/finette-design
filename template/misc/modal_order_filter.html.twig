@@ -1,0 +1,35 @@
+{% import 'macro/form.html.twig' as form %}
+
+{% set statuses = [{
+	'name' : 'Neuhrazeno',
+	'id'   : '0'
+}, {
+	'name' : 'Zrušeno',
+	'id'   : '1'
+}, {
+	'name' : 'Částečně uhrazeno',
+	'id'   : '2'
+}, {
+	'name' : 'Uhrazeno',
+	'id'   : '3'
+}, {
+	'name' : 'Odesláno',
+	'id'   : '4'
+}, {
+	'name' : 'Přijato',
+	'id'   : '5'
+}] %}
+
+<div class="modal__content-heading">
+	<span class="modal__content-title">Filtr</span>
+</div>
+<form method="get" action="/order/overview" data-name="order_filter" novalidate>
+	<div class="modal__content-text">
+		{{ form.select('Produkt', 'product_id', null, products, null, null, true) }}
+		{{ form.select('Stav', 'status', null, statuses) }}
+	</div>
+	<div class="modal__content-footer">
+	<a class="btn  modal__button--cancel" href="#">Zrušit</a>
+		{{ form.submit('Filtrovat', 'Filtruji...') }}
+	</div>
+</form>

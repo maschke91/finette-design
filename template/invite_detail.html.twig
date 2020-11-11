@@ -1,0 +1,195 @@
+{% extends 'layout/menu.html.twig' %}
+
+{% import 'macro/form.html.twig' as form %}
+
+{% block content %}
+<section class="page__content bg-white box__shadow">
+	<div class="breadcrumbs__wrap">
+		<span class="breadcrumbs__item">Pozvánky</span><span class="breadcrumbs__item active">Editace pozvánky</span>
+	</div>
+	<div class="section">
+    <div class="tabs__wrap">
+      <nav class="tab__navigation-wrap">
+        <button data-tab="tab-1" class="btn tab__navigation-button active">Editace</button>
+        {% if id and role_affiliate %}
+        <button data-tab="tab-2" class="btn tab__navigation-button">Provize</button>
+        {% endif %}
+      </nav>
+      <div class="tab__boxes-wrap">
+        {#
+          Základní informace
+          Superaffiliate
+          Role
+          #}
+          <div class="tab__box-content pt-3 active" data-content-box="tab-1">
+            {# <h1 class="legend">Pozvánky</h1> #}
+            <form action="/invite/ajax_save" data-name="invite_detail" class="full-width">
+              <div class="row">
+                <div class="col-xs-12 px-0">
+                  <fieldset>
+                    <legend class="legend">Základní informace</legend>
+                    <div class="row">
+                      {% if id %}
+                      <div class="col-xs-12">
+                        {{ form.input('Datum vytvoreni', 'timestamp', null, timestamp, null, true) }}
+                      </div>
+                      {% endif %}
+                      <div class="col-xs-12">
+                        {{ form.input('E-Mail', 'email', [{
+                          'type' : 'empty',
+                          'text' : 'Musíte vyplnit e-mail'
+                        }, {
+                          'type' : 'format',
+                          'text' : 'Špatný formát e-mailu'
+                        }, {
+                          'type' : 'valid',
+                          'text' : 'Tento e-mail je již použitý'
+                        }], email, 'email', id, 'email') }}
+                      </div>
+                      <div class="col-xs-12 col-md-6 col-lg-6">
+                        <div class="full-width-input">
+                          {{ form.textarea('Popis', 'text', [{
+                            'type' : 'empty',
+                            'text' : 'Musíte vyplnit text'
+                          }], text, sent_timestamp) }}
+                        </div>
+                      </div>
+                    </div>
+                  </fieldset>
+                </div>
+              </div>
+              {% if role == 4 %}
+              <fieldset class="mx-2">
+                <legend class="legend">Superaffiliate</legend>
+                <div class="row">
+                  <div class="col-xs-12 col-md-6 col-lg-4">
+                    {{ form.select('Superaffiliate', 'superaffiliate_id', null, affiliates, superaffiliate_id, null, true) }}
+                  </div>
+                  <div class="col-xs-12 col-md-6 col-lg-4">
+                    {{ form.checkbox('Sám sobě', 'self_superaffiliate', null, self_superaffiliate) }}
+                  </div>
+                </div>
+              </fieldset>
+              {% endif %}
+              {% if role == 4 %}
+              <fieldset class="mx-2">
+                <legend class="legend">Role</legend>
+                <div class="row">
+                  <div class="col-xs-12">
+                    {{ form.multicheckbox('Role', 'roles', [{
+                      'type' : 'empty',
+                      'text' : 'Musíte vybrat roli'
+                    }], [{
+                      'id'   : 'role_customer',
+                      'name' : 'Customer'
+                    }, {
+                      'id'   : 'role_affiliate',
+                      'name' : 'Affiliate'
+                    }, {
+                      'id'   : 'role_emitent',
+                      'name' : 'Emitent'
+                    }, {
+                      'id'   : 'role_spectator',
+                      'name' : 'Spectator'
+                    }, {
+                      'id'   : 'role_provider',
+                      'name' : 'Provider'
+                    }], roles ?? 'role_customer,role_affiliate') }}
+                  </div>
+                </div>
+              </fieldset>
+              <fieldset class="mx-2">
+                <legend class="legend">Identity</legend>
+                <div class="row">
+                  <div class="col-xs-12">
+                    {{ form.multicheckbox('Identity', 'profiles', null, emitents, profiles) }}
+                  </div>
+                </div>
+              </fieldset>
+                {% else %}
+                    {{ form.hidden('roles', 'role_customer') }}
+                {% endif %}
+              <div class="form__button-wrap button-wrap-horizontal">
+                <a href="/invite" title="Pozvánky" class="btn">Zpět</a>
+                {{ form.hidden('id', id) }}
+                {{ form.submit('Uložit', 'Ukládám...') }}
+              </div>
+            </form>
+          </div>
+          {% if id and role_affiliate %}
+          <div class="tab__box-content pt-3" data-content-box="tab-2">
+            {#   <h2 class="legend">Provize</h2> #}
+            <form action="/invite/ajax_rates" data-name="invite_rates" class="full-width">
+              {{ form.rates('commission_rates', products, rates) }}
+              <div class="form__button-wrap button-wrap-horizontal">
+                <a href="/invite" title="Pozvánky" class="btn">Zpět</a>
+                {{ form.hidden('invite_id', id) }}
+                {{ form.submit('Uložit', 'Ukládám...') }}
+              </div>
+            </form>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+  {# <h1>Pozvánky</h1>
+    <h2>Detail</h2>
+    <form action="/invite/ajax_save" data-name="invite_detail">
+      {% if id %}
+      {{ form.input('Datum vytvoreni', 'timestamp', null, timestamp, null, true) }}
+      {% endif %}
+      <br />
+      {{ form.select('Superaffiliate', 'superaffiliate_id', null, affiliates, superaffiliate_id) }}
+      {{ form.checkbox('Sám sobě', 'self_superaffiliate', null, self_superaffiliate) }}
+      <br />
+      {{ form.input('E-Mail', 'email', [{
+        'type' : 'empty',
+        'text' : 'Musíte vyplnit e-mail'
+      }, {
+        'type' : 'format',
+        'text' : 'Špatný formát e-mailu'
+      }, {
+        'type' : 'valid',
+        'text' : 'Tento e-mail je již použitý'
+      }], email, 'email', sent_timestamp) }}
+      <br />
+      {{ form.textarea('Popis', 'text', [{
+        'type' : 'empty',
+        'text' : 'Musíte vyplnit text'
+      }], text, sent_timestamp) }}
+      <br />
+      {{ form.multicheckbox('Role', 'roles', [{
+        'type' : 'empty',
+        'text' : 'Musíte vybrat roli'
+      }], [{
+        'id'   : 'role_customer',
+        'name' : 'Customer'
+      }, {
+        'id'   : 'role_affiliate',
+        'name' : 'Affiliate'
+      }, {
+        'id'   : 'role_emitent',
+        'name' : 'Emitent'
+      }, {
+        'id'   : 'role_spectator',
+        'name' : 'Spectator'
+      }, {
+        'id'   : 'role_provider',
+        'name' : 'Provider'
+      }], roles) }}
+      <br />
+      {{ form.hidden('id', id) }}
+      {{ form.submit('Uložit', 'Ukládám...') }}
+    </form>
+    {% if id and role_affiliate %}
+    <h2>Provize</h2>
+    <form action="/invite/ajax_rates" data-name="invite_rates">
+      {{ form.rates('commission_rates', products, rates) }}
+      <br />
+      {{ form.hidden('invite_id', id) }}
+      {{ form.submit('Uložit', 'Ukládám...') }}
+    </form>
+    {% endif %} #}

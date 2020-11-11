@@ -1,0 +1,67 @@
+<table class="table responsive-table vector__price-table">
+  <thead>
+    <tr>
+      <th>Počátek ceny</th>
+      <th>Cena</th>
+      <th>&nbsp;</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for price in prices %}
+    <tr>
+      <td data-label="Počátek ceny">{{ price.from_date }}</td>
+      <td data-label="Cena">{{ price.price }}</td>
+      <td class="text-right">
+        <a data-price="edit" href="/product/ajax_price_edit/{{ price.id }}" class="btn btn-icon btn-rounded smaller-icon">
+          <span class="svg__container">
+            <svg class="svg__icon svg__content">
+              <use xlink:href="/assets/img/svg/svg.svg#edit" x="0" y="0" width="100%" height="100%" />
+            </svg>
+          </span>
+        </a>
+        <a data-price="delete" href="/product/ajax_price_delete/{{ price.id }}" class="btn btn-icon btn-rounded">
+          <span class="svg__container">
+            <svg class="svg__icon svg__content">
+              <use xlink:href="/assets/img/svg/svg.svg#close" x="0" y="0" width="100%" height="100%" />
+            </svg>
+          </span>
+        </a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% if prices is empty %}
+{# <bloquote>
+  <p class="pl-2 pt-0">Žádné položky k zobrazení.</p>
+</bloquote> #}
+	<div class="no_items">
+    <p>Žádné položky k zobrazení.</p>
+  </div>
+{% endif %}
+
+{#
+<table>
+  <thead>
+    <tr>
+      <th>Počátek ceny</th>
+      <th>Cena</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for price in prices %}
+    <tr>
+      <td>{{ price.from_date }}</td>
+      <td>{{ price.price }}</td>
+      <td>
+        <a href="/product/price/edit/{{ price.id }}">Upravit</a>
+        <a href="/product/price/delete/{{ price.id }}">Smazat</a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% if prices is empty %}
+<p>Žádné položky k zobrazení.</p>
+{% endif %}#}

@@ -1,0 +1,28 @@
+// Pagination common styles
+.pagination__wrap {
+  width: 100%;
+  display: block;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content:  space-between;
+  align-content: stretch;
+  align-items: flex-start;
+
+  .pagination__button.active {
+    background-color: rgba(128,128,128,.2);
+
+    svg {
+      fill: $secondary-color;
+    }
+	}
+	
+	@media screen and (min-width: $md) {
+		display: flex;
+	}
+}
+
+.gotopage__form {
+	button {
+		margin-bottom: 16px;
+	}
+}

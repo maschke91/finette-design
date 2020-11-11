@@ -1,0 +1,73 @@
+{% import 'macro/form.html.twig' as form %}
+
+<div class="modal__content-heading">
+  <span class="modal__content-title">Editace ceny</span>
+</div>
+<form action="/product/ajax_price_save" data-name="product_price_edit" novalidate>
+  <div class="modal__content-text">
+    <div class="d-block d-md-flex">
+      <div>
+        {{ form.datepicker('Počátek ceny', 'from_date', [{
+          'type' : 'empty',
+          'text' : 'Musíte vyplnit počátek ceny'
+        }, {
+          'type' : 'format',
+          'text' : 'Špatný formát počátku ceny'
+        }, {
+          'type' : 'valid-min',
+          'text' : 'Počátek ceny je dříve než počátek prodeje'
+        }, {
+          'type' : 'valid-max',
+          'text' : 'Počátek ceny je později než konec prodeje'
+        }], from_date, '2') }}
+      </div>
+      <div class="ml-0 ml-md-4">
+        {{ form.input('Cena', 'price', [{
+          'type' : 'empty',
+          'text' : 'Musíte vyplnit cenu'
+        }, {
+          'type' : 'format',
+          'text' : 'Špatný formát ceny'
+        }], price) }}
+      </div>
+    </div>
+  </div>
+  <div class="modal__content-footer">
+    {{ form.hidden('id', id) }}
+    <a href="#" class="btn modal__button--cancel">Zrušit</a>
+    {{ form.submit('Uložit', 'Ukládám...') }}
+  </div>
+</form>
+
+
+
+
+{# <h3>Editace ceny</h3>
+  <form action="/product/ajax_price_save" data-name="product_price_edit">
+    {{ form.input('Počátek ceny', 'from_date', [{
+      'type' : 'empty',
+      'text' : 'Musíte vyplnit počátek ceny'
+    }, {
+      'type' : 'format',
+      'text' : 'Špatný formát počátku ceny'
+    }, {
+      'type' : 'valid-min',
+      'text' : 'Počátek ceny je dříve než počátek prodeje'
+    }, {
+      'type' : 'valid-max',
+      'text' : 'Počátek ceny je později než konec prodeje'
+    }], from_date) }}
+    <br />
+    {{ form.input('Cena', 'price', [{
+      'type' : 'empty',
+      'text' : 'Musíte vyplnit cenu'
+    }, {
+      'type' : 'format',
+      'text' : 'Špatný formát ceny'
+    }], price) }}
+    <br />
+    {{ form.hidden('id', id) }}
+    {{ form.submit('Uložit', 'Ukládám...') }}
+    <a href="#" class="modal__button--cancel">Zrušit</a>
+  </form> #}
+  

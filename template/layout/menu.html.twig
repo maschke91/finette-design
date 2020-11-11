@@ -1,0 +1,139 @@
+{% extends 'layout/base.html.twig' %}
+
+{% set _roles = {
+  0: 'customer',
+  1: 'affiliate',
+  2: 'emitent',
+  3: 'spectator',
+  4: 'provider'
+} %}
+
+{% block layout %}
+<header class="page__header-wrap">
+  <div class="page__header-top my-3 my-md-4">
+    <div class="container">
+      <div class="d-flex flex-justify">
+        <div class="d-flex">
+          <div class="header__logo-wrap">
+            <img src="/assets/img/logo{{ subdom }}.svg" alt="Finette s.r.o." />
+            <a href="/" title="Finette s.r.o." class="header__logo-link">Finette s.r.o.</a>
+          </div>
+        </div>
+        <div class="d-flex">
+         <div class="hide d-md-inline-block">
+            {{ include('include/affiliate_wallet_link.html.twig') }}
+          </div>
+          {{ include('include/menu_user.html.twig') }}
+          <button class="header__button-wrap js-aside-button d-inline-block d-md-none">
+            <div class="header__button-box">
+              <div class="header__button-inner"></div>
+            </div>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="page__header-bottom">
+    <div class="container">
+      <div class="d-flex flex-justify">
+        <nav class="navigation horizontal-navigation d-none d-md-flex">
+          {{ include('include/menu_' ~ _roles[role] ~ '.html.twig') }}
+        </nav>
+        {% if role in [0,1,2] %}
+        {% set fileno = role + 64 %}
+        <div class="d-none d-md-block">
+          <a href="/file/download/{{ fileno }}/open" title="Nápověda" target="_blank" class="header__faq-link">
+            Nápověda
+            <span class="svg__container">
+              <svg class="svg__icon svg__content">
+                <use height="100%" width="100%" x="0" xlink:href="/assets/img/svg/svg.svg#help_outline" y="0"/>
+              </svg>
+            </span>
+          </a>
+        </div>
+        {% endif %}
+    </div>
+    </div>
+  </div>
+</header>
+<aside class="js-aside-content">
+  <div class="aside__content">
+    <div class="aside__block">
+      <div class="user__info-wrap">
+        <span class="user__info-title">
+          <span class="svg__container user__info-icon">
+            <svg class="svg__icon svg__content">
+              <use xlink:href="/assets/img/svg/svg.svg#person" x="0" y="0" width="100%" height="100%" />
+            </svg>
+          </span>
+          Uživatel
+        </span>
+        <div class="user__info-content">
+          <a href="#" class="user__info-link">
+            <span class="user__info-name">{{ user.name }}</span>
+          </a>
+          <span class="user__info-role">{{ _roles[role]|capitalize }}</span>
+          <div class="d-flex">
+            {{ include('include/affiliate_wallet_link.html.twig') }}
+          </div>
+          <hr />
+          <nav class="user__info-navigation">
+              <a href="/user/account" title="Účet" class="user__info-link">Účet</a>
+              <a href="/user/role" title="Choose role" class="user__info-link">Změna role</a>
+              <a href="/user/logout" title="Logout" class="user__info-link">Odhlásit</a>
+            </nav>
+            <hr />
+            <a href="/file/download/38/open" title="Nápověda" target="_blank" class="header__faq-link d-block pl-0">
+            Nápověda
+            <span class="svg__container">
+              <svg class="svg__icon svg__content">
+                <use height="100%" width="100%" x="0" xlink:href="/assets/img/svg/svg.svg#help_outline" y="0"/>
+              </svg>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="aside__block">
+      <span class="aside__block-heading">
+        {# <span class="svg__container aside__block-icon">
+          <svg class="svg__icon svg__content">
+            <use xlink:href="/assets/img/svg/svg.svg#menu" x="0" y="0" width="100%" height="100%" />
+          </svg>
+        </span> #}
+        Menu
+      </span>
+      <nav class="navigation vertical-navigation">
+        {{ include('include/menu_' ~ _roles[role] ~ '.html.twig') }}
+      </nav>
+    </div>
+    {% block aside %}{% endblock %}
+  </div>
+</aside>
+<main class="page-with-footer">
+  <div class="container">
+    <div class="page__content-wrap">
+      {% block content %}{% endblock %}
+    </div>
+  </div>
+</main>
+{% endblock %}
+{% block footer %}
+<footer class="full-width d-block text-center p-4">
+  <button class="btn grey-bg btn-icon btn-rounded scroll-top-button js-scrollToTop">
+    <span class="svg__container" style="width:22px">
+      <svg class="svg__icon svg__content">
+        <use xlink:href="/assets/img/svg/svg.svg#expand_less" x="0" y="0" width="100%" height="100%"></use>
+      </svg>
+    </span>
+  </button>
+  <span class="text-grey smaller__text">© 2019, finette s.r.o., IČ: 07332823, Hrušovská 3203/13A, Moravská Ostrava, 702 00 Ostrava</span>
+</footer>
+{% endblock %}
+
+{# {% block javascript %}
+<script type="text/javascript" src="/assets/vendor/datepicker/js/datepicker.min.js"></script>
+<script type="text/javascript" src="/assets/vendor/datepicker/js/i18n/datepicker.cs-CZ.js"></script>
+<script  type="text/javascript" src="/assets/vendor/stickyTableHeader/jquery.stickyTableHeader.js"></script>
+<script src="/assets/js/main.js"></script>
+{% endblock %} #}

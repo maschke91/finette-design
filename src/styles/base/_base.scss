@@ -1,0 +1,29 @@
+/**
+* COMMON VARIABLE
+*/
+
+// HTML tag
+$html-font-size: 16px;
+$primary-text-color: #1a1a1a;
+
+// Body tag
+$primary-font-family: 'Roboto', sans-serif;
+$primary-font-size: 1rem;
+$primary-font-weight: 300;
+$primary-line-height: 1.25;
+$primary-shadow: 0 0.5rem 1rem rgba(0,0,0,.15);
+$page-background-color: #f5f5f6;
+
+// Mixins
+@mixin transition($property) {
+  transition: all $property ease-in-out;
+}
+@mixin aspectRatio($x,$y) {
+  padding-top: ($y / $x) * 100%;
+}
+@mixin placeholder {
+  &::-webkit-input-placeholder {@content};
+  &:-moz-placeholder           {@content};
+  &::-moz-placeholder          {@content};
+  &:-ms-input-placeholder      {@content};
+}

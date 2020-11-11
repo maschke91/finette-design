@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="cs" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Platební instrukce</title>
+  </head>
+  <body>
+    <h1>Platební instrukce</h1>
+    <table>
+      <tr>
+        <td>
+          <img src="{{ qr }}" />
+        </td>
+        <td>
+        <table>
+          <tr>
+            <th>Částka</th>
+            <td>{{ amount|number_format(2, ',', '.') }} {{ currency }}</td>
+          </tr>
+          <tr>
+            <th>Datum splatnosti</th>
+            <td>{{ term }}</td>
+          </tr>
+          <tr>
+            <th>Číslo účtu</th>
+            <td>{{ bank }}</td>
+          </tr>
+          <tr>
+            <th>Variabilní symbol</th>
+            <td>{{ vs }}</td>
+          </tr>
+        </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

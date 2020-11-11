@@ -1,0 +1,62 @@
+/**
+* Forms
+*/
+.form__button-wrap {
+	display: flex;
+	margin: 12px 0 0;
+	
+	&.button-wrap-horizontal {
+		display: block;
+		text-align: center;
+		
+		button,a {
+			margin: 0 5px;
+		}
+
+		button + button {
+			margin-top: 4px;
+		}
+		
+		@media screen and (min-width: $md) {
+			display: flex;
+			flex-direction: row;
+			justify-content: center;
+
+			button + button {
+				margin-top: 0;
+			}
+		}
+	}
+	
+	&.button-wrap-vertical {
+		flex-direction: column;
+		flex-wrap: nowrap;
+		justify-content: flex-start;
+		align-content: stretch;
+		align-items: center;
+		
+		& > * {
+			margin: 12px 0;
+			
+			&:last-child {
+				margin-bottom: 0;
+			}
+		}
+	}
+}
+
+// Input with button - like prompt
+.form__merged {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	
+	button {
+		margin-bottom: 16px;
+	}
+	
+	@media screen and (min-width: $sm) {
+		flex-direction: row;
+		align-items: flex-end;
+	}
+}

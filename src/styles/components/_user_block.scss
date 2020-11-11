@@ -1,0 +1,89 @@
+// Header user info
+.header__user-info {
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-items: center;
+  align-content: stretch;
+	text-align: left;
+
+  &.btn { 
+    display: flex;
+    text-align: left;
+		text-transform: none;
+		font-size: 0;
+
+    &:hover .header__user-name {
+      color: $dark;
+    }
+  }
+
+  @media screen and (max-width: $md) {
+    display: none;
+  }
+
+  &:focus {
+    outline: none;
+  }
+
+  .header__user-icon {
+    width: 25px;
+    margin-right: 8px;
+  }
+
+  .header__user-name {
+    font-size: 14px;
+    @include transition(321ms);
+  }
+
+  &:hover .header__user-name {
+    color: $primary-color;
+  }
+
+  .header__user-role {
+    font-size: 12px;
+    color: $primary-grey
+  }
+}
+
+// Aside User info block
+.user__info-wrap {
+  
+  .user__info-content {
+    width: 100%;
+  }
+  .user__info-title {
+    display: inline-block;
+    font-weight: 400;
+    font-size: 18px;
+    margin-bottom: 16px;
+  }
+
+  .user__info-icon {
+    display: inline-block;
+    vertical-align: top;
+    width: 20px;
+  }
+
+  .user__info-link {
+    display: block;
+  }
+
+  .user__info-role {
+    font-size: 14px;
+  }
+
+  .user__info-navigation {
+    margin-top: 4px;
+    margin-bottom: 12px;
+
+    a {
+      font-size: 14px;
+      padding: 2px 0;
+    }
+  }
+}

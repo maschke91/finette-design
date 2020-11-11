@@ -1,0 +1,96 @@
+{% extends 'layout/menu.html.twig' %}
+
+{% import 'macro/form.html.twig' as form %}
+
+{% block content %}
+<section class="page__content bg-white box__shadow">
+	<div class="breadcrumbs__wrap">
+		<span class="breadcrumbs__item">Produkty</span>
+	</div>
+	<div class="section">
+   <div class="js-table-wrapper">
+      <table class="table responsive-table">
+        <thead>
+          <tr>
+            <th>Název</th>
+            <th>Kategorie</th>
+            <th>Štítky</th>
+            <th>Prodej od</th>
+            <th>Prodej do</th>
+            <th>Množství</th>
+            <th>Počet klientů</th>
+            <th class="text-right">
+              <a href="/product/new" class="btn btn-colored primary-bg">Přidat</a>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for product in items %}
+          <tr>
+            <td data-label="Název">{{ product.name }}</td>
+            <td data-label="Kategorie">{{ categories[product.category_id].name }}</td>
+            <td data-label="Štítky">
+							{% for label_id in product.label_ids|split(',') %}
+              {{- (loop.index0 ? ', ') ~ labels[label_id].name -}}
+              {% endfor %}
+						</td>
+						<td data-label="Prodej od">{{ product.sell_from_date ?: '-' }}</td>
+						<td data-label="Prodej do">{{ product.sell_to_date ?: '-' }}</td>
+						<td data-label="Množství">{% include "include/product_pcs_legend.html.twig" %}</td>
+						<td data-label="Počet klientů">
+							{{ product.buyers ~ (product.buyers_max ? '/') ~ product.buyers_max }}
+						</td>
+            <td class="text-right">
+              <a href="/product/edit/{{ product.id }}" class="btn btn-icon btn-rounded smaller-icon">
+                <span class="svg__container">
+                  <svg class="svg__icon svg__content">
+                    <use xlink:href="/assets/img/svg/svg.svg#edit" x="0" y="0" width="100%" height="100%" />
+                  </svg>
+                </span>
+              </a>
+              <a href="/product/delete/{{ product.id }}" class="js-confirm btn btn-icon btn-rounded">
+                <span class="svg__container">
+                  <svg class="svg__icon svg__content">
+                    <use xlink:href="/assets/img/svg/svg.svg#close" x="0" y="0" width="100%" height="100%" />
+                  </svg>
+                </span>
+              </a>
+            </td>
+          </tr>
+          {% endfor %}
+          {% if items is empty %}
+          <tr>
+            <td colspan="3" class="table__no-items">
+              <span>Žádné produkty</span>
+            </td>
+          </tr>
+          {% endif %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+{# <h1>Produkty</h1>
+  <h2>Přehled</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Název</th>
+        <th>
+          <a href="/product/new">Přidat</a>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in items %}
+      <tr>
+        <td>{{ item.name }}</td>
+        <td>
+          <a href="/product/edit/{{ item.id }}">Upravit</a>
+          <a class="js-confirm" href="/product/delete/{{ item.id }}">Smazat</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table> #}
+  {% endblock %}

@@ -1,0 +1,104 @@
+{% extends 'layout/menu.html.twig' %}
+
+{% import 'macro/form.html.twig' as form %}
+
+{% block content %}
+<section class="page__content bg-white box__shadow">
+{% include "include/order_nav.html.twig" %}
+  <div class="px-4 text-center">
+    <form action="/order/ajax_pcs" data-name="order_pcs" class="text-left full-width">
+      <table class="table full-width responsive-table">
+        <thead>
+          <tr>
+            <th>Produkt</th>
+            <th>Dostupnost</th>
+            <th>Počet kusů</th>
+            <th>Cena za kus</th>
+            <th>Cena celkem</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td data-label="Produkt">
+              <a href="/catalog/detail/{{ product.id }}">{{ product.name }}</a>
+            </td>
+            <td data-label="Dostupnost" class="responsive__title-block">
+              {% include "include/product_pcs_legend.html.twig" %}
+              {# {% include "include/stockbar.html.twig" %} #}
+              {#  {{ product.pcs_free }}/{{ product.pcs_reserved }}/{{ product.pcs_sold }}
+              <br />
+              {{ product.pcs_free_percent }}%/{{ product.pcs_reserved_percent }}%/{{ product.pcs_sold_percent }}% #}
+            </td>
+            <td data-label="Počet kusů">
+              {{ form.input(null, 'pcs', [{
+                'type' : 'empty',
+                'text' : 'Musíte vyplnit kusy'
+              }, {
+                'type' : 'format',
+                'text' : 'Špatný formát kusů'
+              }, {
+                'type' : 'valid-min',
+                'text' : 'Počet je menší než minimum ' ~ product.pcs_min ~ ' ks'
+              }, {
+                'type' : 'valid-max',
+                'text' : 'Počet je větší než dostupných ' ~ product.pcs_free ~ ' ks'
+              }], pcs, 'number') }}
+            </td>
+            <td data-label="Cena za kus">{{ product.price_actual|number_format(2, ',', '.') }} {{ currency.abbreviation }}</td>
+            <td data-label="Cena celkem">{{ price_total|number_format(2, ',', '.') }} {{ currency.abbreviation }}</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="form__button-wrap button-wrap-horizontal">
+        {{ form.submit('Potvrdit', 'Potvrzuji...') }}
+      </div>
+    </form>
+  </div>
+</section>
+{# <h1>Objednávka</h1>
+  <h2>Počet kusů</h2>
+  <form action="/order/ajax_pcs" data-name="order_pcs">
+    <table>
+      <thead>
+        <tr>
+          <th>Produkt</th>
+          <th>Dostupnost</th>
+          <th>Počet kusů</th>
+          <th>Cena za kus</th>
+          <th>Cena celkem</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <a href="/catalog/detail/{{ product.id }}">{{ product.name }}</a>
+          </td>
+          <td>
+            {{ product.pcs_free }}/{{ product.pcs_reserved }}/{{ product.pcs_sold }}
+            <br />
+            {{ product.pcs_free_percent }}%/{{ product.pcs_reserved_percent }}%/{{ product.pcs_sold_percent }}%
+          </td>
+          <td>
+            {{ form.input(null, 'pcs', [{
+              'type' : 'empty',
+              'text' : 'Musíte vyplnit kusy'
+            }, {
+              'type' : 'format',
+              'text' : 'Špatný formát kusů'
+            }, {
+              'type' : 'valid-min',
+              'text' : 'Počet je menší než minimum ' ~ product.pcs_min ~ ' ks'
+            }, {
+              'type' : 'valid-max',
+              'text' : 'Počet je větší než dostupných ' ~ product.pcs_free ~ ' ks'
+            }], pcs, 'number') }}
+          </td>
+          <td>{{ product.price_actual|number_format(2, ',', '.') }} {{ currency.abbreviation }}</td>
+          <td>{{ price_total|number_format(2, ',', '.') }} {{ currency.abbreviation }}</td>
+        </tr>
+      </tbody>
+    </table>
+    {{ form.submit('Potvrdit', 'Potvrzuji...') }}
+  </form> #}
+  {% endblock %}
+  

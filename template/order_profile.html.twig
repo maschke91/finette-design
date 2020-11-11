@@ -1,0 +1,31 @@
+{% extends 'layout/menu.html.twig' %}
+
+{% import 'macro/form.html.twig' as form %}
+
+{% set types = {
+  0: 'individual',
+  1: 'entity'
+} %}
+
+{% block content %}
+<section class="page__content bg-white box__shadow">
+{% include "include/order_nav.html.twig" %}
+  <div class="px-4 text-center">
+    <form class="full-width text-left" action="/order/ajax_profile" data-name="order_profile" novalidate>
+      {{ include('include/profile_' ~ types[type] ~ '.html.twig') }}
+      <div class="form__button-wrap button-wrap-horizontal">
+        {{ form.submit('Potvrdit', 'Potvrzuji...') }}
+      </div>
+    </form>
+  </div>
+</section>
+{% endblock %}
+{# <h1>Objednávka</h1>
+  <h2>Profil</h2>
+  <form action="/order/ajax_profile" data-name="order_profile">
+    {{ include('include/profile_' ~ types[type] ~ '.html.twig') }}
+    <br />
+    {{ form.submit('Potvrdit', 'Potvrzuji...') }}
+  </form> #}
+  
+  

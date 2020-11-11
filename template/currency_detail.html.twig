@@ -1,0 +1,47 @@
+{% extends 'layout/menu.html.twig' %}
+
+{% import 'macro/form.html.twig' as form %}
+
+{% block content %}
+<section class="page__content bg-white box__shadow">
+	<div class="breadcrumbs__wrap">
+		<span class="breadcrumbs__item">Měny</span><span class="breadcrumbs__item active">Editace měny</span>
+	</div>
+	<div class="section">
+		<form action="/currency/ajax_save" data-name="currency_detail" novalidate>
+			{{ form.input('Název', 'name', [{
+				'type' : 'empty',
+				'text' : 'Musíte vyplnit název'
+			}], name) }}
+			{{ form.input('Zkratka', 'abbreviation', [{
+				'type' : 'empty',
+				'text' : 'Musíte vyplnit zkratku'
+			}], abbreviation) }}
+			<div class="form__button-wrap button-wrap-horizontal">
+				<a href="/currency" title="Pozvánky" class="btn">Zpět</a>
+				{{ form.hidden('id', id) }}
+				{{ form.submit('Uložit', 'Ukládám...') }}
+			</div>
+		</form>
+	</div>
+</section>
+{% endblock %}
+
+{#
+	<h1>Měny</h1>
+	<h2>Detail</h2>
+	<form action="/currency/ajax_save" data-name="currency_detail" novalidate>
+		{{ form.input('Název', 'name', [{
+			'type' : 'empty',
+			'text' : 'Musíte vyplnit název'
+		}], name) }}
+		<br />
+		{{ form.input('Zkratka', 'abbreviation', [{
+			'type' : 'empty',
+			'text' : 'Musíte vyplnit zkratku'
+		}], abbreviation) }}
+		<br />
+		{{ form.hidden('id', id) }}
+		{{ form.submit('Uložit', 'Ukládám...') }}
+	</form>
+	#}

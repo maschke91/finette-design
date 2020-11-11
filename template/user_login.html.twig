@@ -1,0 +1,45 @@
+{% extends 'layout/no_menu.html.twig' %}
+
+{% import 'macro/form.html.twig' as form %}
+
+{% block content %}
+<section class="layout__box-wrap infobox--visible">
+  <div class="layout__box-content">
+    <div class="layout__box-img">
+      <img src="/assets/img/logo{{ subdom }}.svg" alt="Finettte s.r.o." />
+    </div>
+    <form action="/user/ajax_login" data-name="user_login" novalidate>
+      {{ form.input('E-Mail', 'email', [{
+        'type' : 'empty',
+        'text' : 'Musíte vyplnit e-mail'
+      }, {
+        'type' : 'format',
+        'text' : 'Špatný formát e-mailu'
+      }], null, 'email', null, 'email') }}
+
+      {{ form.input('Heslo', 'password', [{
+        'type' : 'empty',
+        'text' : 'Musíte vyplnit heslo'
+      }, {
+        'type' : 'valid',
+        'text' : 'Nesprávné heslo'
+      }], null, 'password', null, 'password') }}
+      <div class="form__button-wrap button-wrap-vertical">
+        {{ form.submit('Přihlásit', 'Přihlašuji...') }}
+      <a href="/user/recovery" class="grey-link smaller-link" title="Zapomenuté heslo">Zapomenuté heslo</a>
+      </div>
+    </form>
+  </div>
+  <div class="layout__box-content infobox__wrap  infobox__content">
+   <h5 class="h5 infobox__title">
+    <span class="svg__container infobox__icon">
+      <svg class="svg__icon svg__content">
+        <use xlink:href="/assets/img/svg/svg.svg#info" x="0" y="0" width="100%" height="100%"></use>
+      </svg>
+    </span>
+     Upozornění</h5>
+     <p>Z důvodu plánované odstávky serveru bude aplikace finette nedostupná od <strong>pátku&nbsp;2/8/19&nbsp;18:00</strong> do <strong>pondělí&nbsp;5/8/19&nbsp;10:00</strong>. Za případné komplikace se omlouváme.</p>
+    {# <p>Z důvodu systémové aktualizace bude webová aplikace nedostupná od <strong>xx.xx. xx:xx</strong> do <strong>xx.xx xx:xx</strong>. </p><p>Děkujeme za pochopení.</p> #}
+  </div> 
+</section>
+{% endblock %}

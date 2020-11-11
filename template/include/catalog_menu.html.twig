@@ -1,0 +1,55 @@
+{% import 'macro/form.html.twig' as form %}
+
+<div class="collapse__menu-wrap bg-white box__shadow">
+  <div class="collapse__menu-item js-collapseMenuItem">
+    <a  href="#" title="Title" class="collapse__item-link menu-open"><span class="collapse__item-title">Stavy</span><span class="catalog__item-icon"></span></a>
+    <nav class="navigation vertical-navigation navigation--visible">
+      {{ form.checkbox('Vše', 'state_all' , null, null, null, null, null ) }}
+      {{ form.checkbox('Aktivní', 'state_active' , null, 1 in filter.state, '1', null, null ) }}
+      {{ form.checkbox('Neaktivní', 'state_inactive' , null, 0 in filter.state, '0', null, null ) }}
+    </nav>
+  </div>
+  <div class="collapse__menu-item js-collapseMenuItem">
+    <a href="#" title="Title 2" class="collapse__item-link menu-open"><span class="collapse__item-title">Kategorie</span><span class="catalog__item-icon"></span></a>
+    <nav class="navigation vertical-navigation navigation--visible">
+      {{ form.checkbox('Vše', 'category_all' , null, null, null, null, null ) }}
+      {% for id, category in categories %}
+        {{ form.checkbox(category.name, 'category_' ~ id , null, id in filter.category, id, null, null ) }}
+      {% endfor %}
+    </nav>
+  </div>
+  {% if role != 2 %}
+  <div class="collapse__menu-item js-collapseMenuItem">
+    <a href="#" title="Title 2" class="collapse__item-link menu-open"><span class="collapse__item-title">Štítky</span><span class="catalog__item-icon"></span></a>
+    <nav class="navigation vertical-navigation navigation--visible">
+    {{ form.checkbox('Vše', 'label_all' , null, null, null, null, null ) }}
+      {% for id, label in labels %}
+       {{ form.checkbox(label.name, 'label_' ~ id , null, id in filter.label, id, null, null ) }}
+      {% endfor %}
+    </nav>
+  </div>
+  {% endif %}
+</div>
+
+{#
+<div class="bg-white box__shadow catalog__categories-wrap">
+  <div class="catalog__category-wrap">
+    <h2 class="h5">Kategorie</h2>
+    <nav class="navigation vertical-navigation">
+      {% for id, category in categories %}
+        <a href="/catalog/category/{{ id }}">{{ category.name }}</a>
+      {% endfor %}
+    </nav>
+  </div>
+  {% if role != 2 %}
+  <div class="catalog__category-wrap">
+    <h2 class="h5">Štítky</h2>
+    <nav class="navigation vertical-navigation">
+      {% for id, label in labels %}
+        <a href="/catalog/label/{{ id }}">{{ label.name }}</a>
+      {% endfor %}
+    </nav>
+  </div>
+  {% endif %}
+</div>
+#}

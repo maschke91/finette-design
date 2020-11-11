@@ -1,0 +1,27 @@
+{% extends 'layout/menu.html.twig' %}
+
+{% import 'macro/form.html.twig' as form %}
+
+{% set types = {
+	0: 'individual',
+	1: 'entity'
+} %}
+
+{% block content %}
+<section class="page__content bg-white box__shadow">
+	<div class="breadcrumbs__wrap">
+		<span class="breadcrumbs__item">Profil</span><span class="breadcrumbs__item active">Editace role: {{ _roles[role]|capitalize }} </span>
+	</div>
+	<div class="section">
+		<form class="full-width" action="/profile/ajax_save" data-name="profile" novalidate>
+			{{ include('include/profile_' ~ types[type] ~ '.html.twig') }}
+			<div class="form__button-wrap button-wrap-horizontal">
+				{{ form.submit('Uložit', 'Ukládám...', 'save') }}
+				{% if role == 1 %}
+					{{ form.submit('Vygenerovat smlouvu', 'Generuji smlouvu...', 'generate') }}
+				{% endif %}
+			</div>
+		</form>
+	</div>
+</section>
+{% endblock %}

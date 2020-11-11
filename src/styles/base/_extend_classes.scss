@@ -1,0 +1,20 @@
+/*
+* Extends classes
+*/
+%common-overlay-classes {
+  display: none;
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  margin: auto;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+}
+%common-shadow {
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.15);
+}
+.box__shadow {
+  @extend %common-shadow;
+}

@@ -1,0 +1,90 @@
+{% extends 'layout/menu.html.twig' %}
+
+{% import 'macro/form.html.twig' as form %}
+
+{% block content %}
+<section class="page__content bg-white box__shadow">
+	<div class="breadcrumbs__wrap">
+		<span class="breadcrumbs__item">Účet</span>
+	</div>
+	<div class="section">
+    <div class="tabs__wrap">
+      <nav class="tab__navigation-wrap">
+        <button data-tab="tab-1" class="btn tab__navigation-button active">Změna přihlašovacího e-mailu</button>
+        <button data-tab="tab-2" class="btn tab__navigation-button">Změna hesla</button>
+        <button data-tab="tab-3" class="btn tab__navigation-button">Změna telefonního čísla</button>
+      </nav>
+      <div class="tab__boxes-wrap">
+        <div class="tab__box-content text-center active" data-content-box="tab-1">
+          <form action="/user/ajax_account_email" data-name="user_account_email" novalidate>
+            {{ form.input('E-Mail', 'email', [{
+              'type' : 'empty',
+              'text' : 'Musíte vyplnit e-mail'
+            }, {
+              'type' : 'format',
+              'text' : 'Špatný formát e-mailu'
+            }, {
+              'type' : 'valid_same',
+              'text' : 'Nový e-mail je stejný jako původní'
+            }, {
+              'type' : 'valid_used',
+              'text' : 'Tento e-mail je již registrovaný'
+            }], account.email, 'email', null, 'email') }}
+            <div class="form__button-wrap button-wrap-horizontal">
+                {{ form.submit('Uložit', 'Ukládám...') }}
+            </div>
+          </form>  
+        </div>
+        <div class="tab__box-content text-center" data-content-box="tab-2">
+          <form action="/user/ajax_account_password" data-name="user_account_password" novalidate>
+            {{ form.input('Heslo', 'password', [{
+              'type' : 'empty',
+              'text' : 'Musíte vyplnit heslo'
+            }, {
+              'type' : 'valid',
+              'text' : 'Nesprávné heslo'
+            }], null, 'password', null, 'password') }}
+            {{ form.input('Nové heslo', 'new_password', [{
+              'type' : 'empty',
+              'text' : 'Musíte vyplnit nové heslo'
+            }, {
+              'type' : 'valid',
+              'text' : 'Nové heslo je stejné jako původní'
+            }], null, 'password', null, 'password') }}
+            {{ form.input('Nové heslo znovu', 'new_password_check', [{
+              'type' : 'empty',
+              'text' : 'Musíte vyplnit nové heslo znovu'
+            }, {
+              'type' : 'valid',
+              'text' : 'Nová hesla se neshodují'
+            }], null, 'password', null, 'password') }}
+            <div class="form__button-wrap button-wrap-horizontal">
+                {{ form.submit('Uložit', 'Ukládám...') }}
+            </div>
+          </form>
+        </div>
+        <div class="tab__box-content text-center" data-content-box="tab-3">
+          <form action="/user/ajax_account_phone" data-name="user_account_phone" novalidate>
+            {{ form.input('Telefonní číslo', 'phone', [{
+              'type' : 'empty',
+              'text' : 'Musíte vyplnit telefonní číslo'
+            }, {
+              'type' : 'format',
+              'text' : 'Špatný formát telefonního čísla'
+            }, {
+              'type' : 'valid_same',
+              'text' : 'Nové telefonní číslo je stejné jako původní'
+            }, {
+              'type' : 'valid_used',
+              'text' : 'Toto telefonní číslo je již registrováno'
+            }], account.phone, 'tel', null, 'tel') }}
+            <div class="form__button-wrap button-wrap-horizontal">
+                {{ form.submit('Uložit', 'Ukládám...') }}
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,57 @@
+<div>
+  <button role="button" data-content-next class="btn header__user-info hide d-md-flex">
+    <span class="svg__container header__user-icon">
+      <svg class="svg__icon svg__content">
+        <use xlink:href="/assets/img/svg/svg.svg#person" x="0" y="0" width="100%" height="100%" />
+      </svg>
+    </span>
+    <div>
+      <span class="header__user-name d-block">{{ user.name }}</span>
+      <span class="header__user-role">{{ _roles[role]|capitalize }}</span>
+    </div>
+  </button>
+  <div data-target="data-settings">
+    <ul class="dropdown__menu-wrap">
+      <li class="dropdown__menu-item">
+        <a href="/user/account" title="Účet" class="dropdown__menu-link">
+          <div class="svg__container dropdown__menu-icon">
+            <svg class="svg__icon svg__content">
+              <use xlink:href="/assets/img/svg/svg.svg#settings" x="0" y="0" width="100%" height="100%" />
+            </svg>
+          </div>
+          <span class="dropdown__menu-title">Účet</span>
+        </a>
+      </li>
+      <li class="dropdown__menu-item">
+        <a href="/user/role" title="Změna role" class="dropdown__menu-link">
+          <div class="svg__container dropdown__menu-icon">
+            <svg class="svg__icon svg__content">
+              <use xlink:href="/assets/img/svg/svg.svg#people" x="0" y="0" width="100%" height="100%" />
+            </svg>
+          </div>
+          <span class="dropdown__menu-title">Změna role</span>
+        </a>
+			</li>
+			<li class="dropdown__menu-item">
+        <a href="/document" title="Dokumenty" class="dropdown__menu-link">
+          <div class="svg__container dropdown__menu-icon">
+            <svg class="svg__icon svg__content">
+              <use xlink:href="/assets/img/svg/svg.svg#file" x="0" y="0" width="100%" height="100%" />
+            </svg>
+          </div>
+          <span class="dropdown__menu-title">Dokumenty</span>
+        </a>
+      </li>
+      <li class="dropdown__menu-item">
+        <a href="/user/logout" title="Odhlásit se" class="dropdown__menu-link">
+          <div class="svg__container dropdown__menu-icon">
+            <svg class="svg__icon svg__content">
+              <use xlink:href="/assets/img/svg/svg.svg#exit_to_app" x="0" y="0" width="100%" height="100%" />
+            </svg>
+          </div>
+          <span class="dropdown__menu-title">Odhlásit se</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>

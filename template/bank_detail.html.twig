@@ -1,0 +1,20 @@
+{% extends 'layout/menu.html.twig' %}
+
+{% import 'macro/form.html.twig' as form %}
+
+{% block content %}
+<section class="page__content bg-white box__shadow">
+	<div class="breadcrumbs__wrap">
+		<span class="breadcrumbs__item">Bankovní účty</span><span class="breadcrumbs__item active">Editace účtu</span>
+	</div>
+	<div class="section">
+		<form action="/bank/ajax_save" data-name="bank_detail" class="full-width" novalidate>
+			{{ include('include/bank_detail.html.twig') }}
+			<div class="form__button-wrap button-wrap-horizontal">
+				<a href="/bank" title="Pozvánky" class="btn">Zpět</a>
+				{{ form.hidden('id', id) }}
+				{{ form.submit('Uložit', 'Ukládám...') }}
+			</div>
+		</form>
+</section>	
+{% endblock %}

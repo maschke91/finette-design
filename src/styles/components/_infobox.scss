@@ -1,0 +1,112 @@
+//  Infobox
+// TODO: dodelat
+.layout__box-wrap.infobox--visible {
+  .layout__box-content {
+    margin: 0;
+  }
+}
+
+.infobox__wrap {
+  display: none;
+  opacity: 0;
+  margin-left: 16px !important;
+  @include transition(321ms);
+}
+
+.infobox--visible  {
+  .infobox__wrap {
+    display: block;
+    opacity: 1;
+  }
+}
+
+.infobox__title {
+  position: relative;
+  font-size: 22px;
+  font-weight: 400;
+  color: $secondary-color;
+  padding: 0;
+  margin: 0;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(0,0,0,.12);
+}
+
+.infobox__content {
+  padding: 48px 34px !important;
+
+  * {
+    max-width: 200px;
+  }
+
+  p {
+    padding-bottom: 0;
+    margin-bottom: 0;
+    font-size: 15px;
+  }
+
+  .infobox__icon {
+    width: 22px;
+    margin-bottom: 3px;
+  }
+}
+/* 
+  .infobox__wrap {
+    max-width: 320px;
+    height: 0;
+    opacity: 0;
+    background-color: #fff;
+    box-shadow: 0 1px .375rem rgba(0, 0, 0, .15);
+    position: absolute;
+    z-index: 99999;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    margin-left: 8px;
+    margin-right: 8px;
+    transition: opacity 1234ms ease-in-out;
+  
+    @media screen and (min-width: $sm) {
+      margin-left: auto;
+      margin-right: auto;
+    }
+  
+    &.infobox--visible {
+      opacity: 1;
+    }
+  
+    .infobox__header {
+      padding: 8px 10px 8px 20px;
+      border-bottom: 1px solid $grey-light;
+    }
+  
+    .infobox__title {
+      font-size: 16px;
+      font-weight: 400;
+      display: inline-block;
+      max-width: 200px;
+      overflow: hidden;
+    }
+  
+    .infobox__icon {
+  
+      &.svg__container {
+        width: 18px;
+      }
+    }
+  
+    .infobox__text {
+      padding: 16px 20px;
+  
+      p {
+        font-size: 14px;
+  
+        &:last-child {
+          margin-bottom: 0;
+          padding-bottom: 0;
+        }
+      }
+    } // infobox__text end
+  } // infobox__wrap end */
+  

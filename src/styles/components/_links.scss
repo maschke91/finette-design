@@ -1,0 +1,9 @@
+// Links
+.link--disabled {
+  pointer-events: none;
+  cursor: default;
+  opacity: .6;
+}
+.ignore--active {
+  color: #1a1a1a !important;
+}

@@ -1,0 +1,64 @@
+/*
+* Project colors
+*/
+
+// Body
+$content-color: #1a1a1a;
+$body-background-color: #e6f5fe;
+
+// Common colors for content
+$primary-color: #0ca6d3;
+$primary-color-hover: darken($primary-color, 10%);
+$secondary-color: #253060;
+$secondary-color-hover: darken($secondary-color, 20%);
+$primary-link-color: #1a1a1a;
+$dark: #1a1a1a;
+$grey: #808080;
+$grey-dark: #DCDCDD;
+$grey-light: rgba(0,0,0,.12);
+$primary-grey: #99adbb;
+$error-color: #cc0f16;
+$white: #fff;
+$success: #2b960a;
+
+// Common colors classes
+.bg-white {
+  background-color: $white;
+}
+.text-grey {
+  color: $primary-grey;
+}
+
+// Colors mixin
+$color-states: (
+  '0': #e30b0b,
+  '1': #8f8f8f,
+  '2': #e0a911,
+  '3': #339933,
+  '4': #0b10f5,
+  '5': #b4d455
+);
+
+@each $name, $hex in $color-states {
+  .state-#{$name} {
+    color: $hex;
+	}
+	.state-bg-#{$name} {
+    background: $hex;
+	}
+	.state-svg-fill-#{$name} {
+		svg {
+			fill: $hex;
+		}
+	}
+}
+
+$project-colors: (
+  /* 'unpaid': #e30b0b, */
+);
+
+@each $name, $hex in $project-colors {
+  .#{$name} {
+    color: $hex;
+  }
+}

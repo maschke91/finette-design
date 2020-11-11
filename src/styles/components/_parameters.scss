@@ -1,0 +1,22 @@
+
+// Parameters list
+// ul.parameters__wrap > li.parameters__item > .parameter__name + .parameter__value
+.parameters__wrap {
+  .parameters__item {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-content: stretch;
+    align-items: flex-start;
+
+    .parameter__name,
+    .parameter__value {
+      font-size: 13px;
+      font-weight: 300;
+    }
+    .parameter__name {
+      color: $primary-grey;
+    }
+  }
+}

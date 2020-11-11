@@ -1,0 +1,14 @@
+<div class="stock__legend-wrap">
+  <span class="stock__legend-item">
+    <span class="stock__legend-color status-3"></span>
+    <span class="stock__legend-name">Volné k prodeji: <span class="stock__legend-value">{{ product.pcs_free }}</span></span>
+  </span>
+  <span class="stock__legend-item">
+    <span class="stock__legend-color status-2"></span>
+    <span class="stock__legend-name">Rezerované: <span class="stock__legend-value">{{ product.pcs_reserved ?? 0 }}</span></span>
+  </span>
+  <span class="stock__legend-item">
+    <span class="stock__legend-color status-1"></span>
+    <span class="stock__legend-name">Prodané: <span class="stock__legend-value">{{ product.pcs_sold }}</span></span>
+  </span>
+</div>

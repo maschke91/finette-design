@@ -1,0 +1,31 @@
+// Tooltip
+// Addclass to element - .tooltip
+// Tooltip content is in data attribute data-tooltip=""
+.tooltip {
+  position: relative;
+}
+.tooltip::after {
+  background: $secondary-color;
+  border-radius: .1rem;
+  bottom: 100%;
+  color: $white;
+  content: attr(data-tooltip);
+  display: block;
+  font-size: 13px;
+  left: 50%;
+  max-width: 320px;
+  opacity: 0;
+  overflow: hidden;
+  padding: .2rem .4rem;
+  pointer-events: none;
+  position: absolute;
+  text-overflow: ellipsis;
+  transform: translate(-50%,.4rem);
+  transition: opacity .2s,transform .2s;
+  white-space: pre;
+  z-index: 1339;
+}
+.tooltip:focus::after, .tooltip:hover::after {
+  opacity: 1;
+  transform: translate(-50%,-.2rem);
+}

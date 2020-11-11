@@ -1,0 +1,77 @@
+{% import 'macro/form.html.twig' as form %}
+
+<div class="modal__content-heading">
+	<span class="modal__content-title">Připsat platbu</span>
+</div>
+<form action="/order/ajax_payment_add" data-name="order_payment_add" novalidate>
+	<div class="modal__content-text">
+		<div class="d-block d-md-flex">
+			<div>
+				{{ form.input('Částka', 'amount', [{
+					'type' : 'empty',
+					'text' : 'Musíte vyplnit částku'
+				}, {
+					'type' : 'format',
+					'text' : 'Špatný formát částky'
+				}]) }}
+			</div>
+			<div class="ml-0 ml-md-4">
+				{{ form.datepicker('Datum přijetí', 'receive_date', [{
+					'type' : 'empty',
+					'text' : 'Musíte vyplnit datum přijetí'
+				}, {
+					'type' : 'format',
+					'text' : 'Špatný formát data přijetí'
+				}, {
+					'type' : 'valid-min',
+					'text' : 'Datum přijetí je dříve než vytvoření objednávky'
+				}, {
+					'type' : 'valid-max',
+					'text' : 'Datum přijetí je později než dnes'
+				}]) }}
+			</div>
+		</div>
+		<div>
+			{{ form.input('Bankovní účet', 'bank', [{
+				'type' : 'empty',
+				'text' : 'Musíte vyplnit bankovní účet'
+			}, {
+				'type' : 'format',
+				'text' : 'Špatný formát bankovního účtu'
+			}, {
+				'type' : 'valid',
+				'text' : 'Neplatný bankovní účet'
+			}], bank) }}
+		</div>
+	</div>
+	<div class="modal__content-footer">
+		{{ form.hidden('id', id) }}
+		<a href="#" class="btn modal__button--cancel">Zrušit</a>
+		{{ form.submit('Uložit', 'Ukládám...') }}
+	</div>
+</form>
+
+
+
+{# <h3>Připsat platbu</h3>
+<form action="/order/ajax_payment_add" data-name="order_payment_add" novalidate>
+	{{ form.input('Částka', 'amount', [{
+		'type' : 'empty',
+		'text' : 'Musíte vyplnit částku'
+	}, {
+		'type' : 'format',
+		'text' : 'Špatný formát částky'
+	}]) }}
+	<br />
+	{{ form.input('Datum přijetí', 'receive_date', [{
+		'type' : 'empty',
+		'text' : 'Musíte vyplnit datum přijetí'
+	}, {
+		'type' : 'format',
+		'text' : 'Špatný formát data přijetí'
+	}]) }}
+	<br />
+	{{ form.hidden('id', id) }}
+	{{ form.submit('Uložit', 'Ukládám...') }}
+	<a href="#" class="modal__button--cancel">Zrušit</a>
+</form> #}

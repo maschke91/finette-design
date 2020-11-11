@@ -1,0 +1,38 @@
+{% extends 'layout/menu.html.twig' %}
+
+{% import 'macro/form.html.twig' as form %}
+
+{% block content %}
+<section class="page__content bg-white box__shadow">
+	<div class="breadcrumbs__wrap">
+		<span class="breadcrumbs__item">Kategorie</span><span class="breadcrumbs__item active">Editace kategorie</span>
+	</div>
+	<div class="section">
+		<form action="/category/ajax_save" data-name="category_detail" novalidate>
+			{{ form.input('Název', 'name', [{
+				'type' : 'empty',
+				'text' : 'Musíte vyplnit název'
+			}], name) }}
+			<div class="form__button-wrap button-wrap-horizontal">
+				<a href="/category" title="Pozvánky" class="btn">Zpět</a>
+				{{ form.hidden('id', id) }}
+				{{ form.submit('Uložit', 'Ukládám...') }}
+			</div>
+		</form>
+	</div>
+</section>
+{% endblock %}
+
+{#
+	<h1>Kategorie</h1>
+	<h2>Detail</h2>
+	<form action="/category/ajax_save" data-name="category_detail" novalidate>
+		{{ form.input('Název', 'name', [{
+			'type' : 'empty',
+			'text' : 'Musíte vyplnit název'
+		}], name) }}
+		<br />
+		{{ form.hidden('id', id) }}
+		{{ form.submit('Uložit', 'Ukládám...') }}
+	</form>
+	#}

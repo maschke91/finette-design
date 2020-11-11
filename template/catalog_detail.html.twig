@@ -1,0 +1,285 @@
+{% extends 'layout/menu.html.twig' %}
+
+{% import 'macro/form.html.twig' as form %}
+{% import 'macro/common.html.twig' as common %}
+
+{% block aside %}
+{% include "include/catalog_aside_menu.html.twig" %}
+{% endblock %}
+
+{% block content %}
+<section class="page__content">
+	<div class="row">
+		<div class="hidden d-md-block col-md-2 pl-md-0">
+			{# include('include/catalog_menu.html.twig') #}
+		</div>
+		<div class="col-xs-12 col-md-10 p-0">
+			<div class="row">
+				<div class="col-xs-12 col-lg-8 pr-2 pr-md-0 pr-lg-2">
+					<div class="product__detail-wrap box__shadow">
+						<div class="product__labels-wrap">
+							{% if product.label_ids %}
+							{% for label_id in product.label_ids|split(',') %}
+							<span class="product__label label-1">{{ labels[label_id].name }}</span>
+							{% endfor %}
+							{% endif %}
+						</div>
+						<div class="product__item-top">
+							{# <div class="product__item-img">
+								<img src="/assets/img/emitent/rybka/rybka_logo.jpg" alt="{{ product.name }}" />
+							</div> #}
+							<h2 class="product__item-title">{{ product.name }}</h2>
+							<div class="product__item-desc">
+								<p>{{ product.text|raw }}</p>
+							</div>
+						</div>
+						{% if emitent.text %}
+						<hr />
+						<div class="product__item-desc">
+							<!-- <h3 class="h5 product__item-emitent">Emitent</h3> -->
+							<p>{{ emitent.text|raw }}</p>
+							{% for label_id in product.label_ids|split(',') %}
+							<p>{{ labels[label_id].text|raw }}</p>
+							{% endfor %}
+						</div>
+						{% endif %}
+						<div class="product__stock-wrap">
+							{% include "include/stockbar.html.twig" %}
+						</div>
+						<div class="product__item-bottom">
+							<div class="pb-3 pb-md-0">
+								<span class="product__item-price"><span data-price>{{ product.price_min|number_format(2, ',', '.') }}</span> {{ currencies[product.currency_id].abbreviation }}</span>
+							</div>
+							<div>
+								{% if role == 0 and product.salable %}
+								  {% if product.limit %}
+									<form action="/order/ajax_buy" data-name="order_buy" novalidate class="form__merged">
+										{{ form.input('Kusy', 'pcs', [{
+											'type' : 'empty',
+											'text' : 'Musíte vyplnit kusy'
+										}, {
+											'type' : 'format',
+											'text' : 'Špatný formát kusů'
+										}, {
+											'type' : 'valid-min',
+											'text' : 'Počet je menší než minimum ' ~ product.pcs_min ~ ' ks'
+										}, {
+											'type' : 'valid-max',
+											'text' : 'Počet je větší než dostupných ' ~ product.pcs_free ~ ' ks'
+										}], product.pcs_min, 'number') }}
+										<div>
+											{{ form.hidden('id', product.id) }}
+											{{ form.submit('Koupit', 'Kupuji...') }}
+										</div>
+									</form>
+								  {% else %}
+									<div class="product__states-wrap">
+								    <div class="product__states-item sale-end">
+								      <span class="svg__container product__states-icon">
+								        <svg class="svg__icon svg__content">
+								          <use xlink:href="/assets/img/svg/svg.svg#announcement" x="0" y="0" width="100%" height="100%" />
+								        </svg>
+								      </span>
+								      <span class="product__states-title"><small>U tohoto produktu došlo k vyčerpání zákonného limitu počtu investorů a není možné jej koupit. Zkuste si prosím vybrat jinou příležitost v <a href="/catalog">Katalogu</a>.</small></span>
+								    </div>
+								  </div>
+								  {% endif %}
+								{% endif %}
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-12 col-lg-4 pr-md-0">
+					<div class="tabs__wrap box__shadow p-2">
+						<nav class="tab__navigation-wrap">
+							<button data-tab="tab-1" class="btn tab__navigation-button active">Parametry</button>
+							{% if files %}
+							<button data-tab="tab-2" class="btn tab__navigation-button">Soubory</button>
+							{% endif %}
+						</nav>
+						<div class="tab__boxes-wrap">
+							<div class="tab__box-content pb-0 pt-2 active" data-content-box="tab-1">
+								<ul class="parameters__wrap styled__list">
+									<li class="parameters__item">
+										<span class="parameter__name">Emitent</span>
+										<span class="parameter__value">{{ emitent.name }}</span>
+									</li>
+									<li class="parameters__item">
+										<span class="parameter__name">ISIN</span>
+										<span class="parameter__value">{{ product.isin }}</span>
+									</li>
+									<li class="parameters__item">
+										<span class="parameter__name">Úrok</span>
+										<span class="parameter__value">{{ product.rate }} %</span>
+									</li>
+									<li class="parameters__item">
+										<span class="parameter__name">Počáteční počet</span>
+										<span class="parameter__value">{{ product.pcs }} ks</span>
+									</li>
+									<li class="parameters__item">
+										<span class="parameter__name">Dostupný počet</span>
+										<span class="parameter__value">{{ product.pcs_free }} ks</span>
+									</li>
+									<li class="parameters__item">
+										<span class="parameter__name">Minimální objednávka</span>
+										<span class="parameter__value">{{ product.pcs_min }} ks</span>
+									</li>
+									<li class="parameters__item">
+										<span class="parameter__name">Nominální hodnota</span>
+										<span class="parameter__value">{{ product.price|number_format(2, ',', '.') }} {{ currencies[product.currency_id].abbreviation }}</span>
+									</li>
+									<li class="parameters__item">
+										<span class="parameter__name">Obdobi prodeje</span>
+										<span class="parameter__value">{{ product.sell_from_date }} - {{ product.sell_to_date }}</span>
+									</li>
+									<li class="parameters__item">
+										<span class="parameter__name">Maturita</span>
+										<span class="parameter__value">{{ product.maturity_date }}</span>
+									</li>
+									<li class="parameters__item">
+										<span class="parameter__name">Platnost produktu</span>
+										<span class="parameter__value">
+											{% if product.valid_type %}
+											{{ product.valid_days }} dní
+											{% else %}
+											{{ product.valid_from_date }} - {{ product.valid_to_date }}
+											{% endif %}
+										</span>
+									</li>
+								</ul>
+							</div>
+							{% if files %}
+							<div class="tab__box-content pb-0 pt-2" data-content-box="tab-2">
+								<ul class="download__list">
+									{% for file in files %}
+									<li>
+										<a download href="/file/download/{{ file.id }}" title="{{ file.name }}" target="_blank">{{ file.name }}</a>
+									</li>
+									{% endfor %}
+								</ul>
+							</div>
+							{% endif %}
+							<div class="tab__box-content" data-content-box="tab-3">
+								<p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ullam rem sed ab a similique repellendus consequuntur dolorem excepturi neque? Eveniet?</p>
+							</div>
+						</div>
+					</div>
+					{# <div class="mt-3 bg-white box__shadow p-2">
+						{{ common.productStates('0')}}
+						{{ common.productStates('1')}}
+						{{ common.productStates('2')}}
+					</div> #}
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+{# <h1>Katalog</h1>
+	{{ include('include/catalog_menu.html.twig') }}
+	<h2>{{ product.name }}</h2>
+	{% for label_id in product.label_ids|split(',') %}
+	<p>
+		<i>
+			{{ labels[label_id].name }}
+		</i>
+	</p>
+	{% endfor %}
+	<p>{{ product.text|raw }}</p>
+	<p>{{ product.emitent|raw }}</p>
+	<p>{{ product.pcs_free }}/{{ product.pcs_reserved }}/{{ product.pcs_sold }}</p>
+	<p>{{ product.pcs_free_percent }}%/{{ product.pcs_reserved_percent }}%/{{ product.pcs_sold_percent }}%</p>
+	<p>{{ product.price_actual|number_format(2, ',', '.') }} {{ currencies[product.currency_id].abbreviation }}</p>
+	<form action="/order/ajax_buy" data-name="order_buy" novalidate>
+		{{ form.input('Kusy', 'pcs', [{
+			'type' : 'empty',
+			'text' : 'Musíte vyplnit kusy'
+		}, {
+			'type' : 'format',
+			'text' : 'Špatný formát kusů'
+		}, {
+			'type' : 'valid-min',
+			'text' : 'Počet je menší než minimum ' ~ product.pcs_min ~ ' ks'
+		}, {
+			'type' : 'valid-max',
+			'text' : 'Počet je větší než dostupných ' ~ product.pcs_free ~ ' ks'
+		}], product.pcs_min, 'number') }}
+		<br />
+		{{ form.hidden('id', product.id) }}
+		{{ form.submit('Koupit', 'Kupuji...') }}
+	</form> #}
+	{# <h3>Parametry</h3>
+		<table>
+			<thead>
+				<tr>
+					<th>Název</th>
+					<th>Hodnota</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>Emitent</td>
+					<td>{{ emitent.name }}</td>
+				</tr>
+				<tr>
+					<td>ISIN</td>
+					<td>{{ product.isin }}</td>
+				</tr>
+				<tr>
+					<td>Úrok</td>
+					<td>{{ product.rate }} %</td>
+				</tr>
+				<tr>
+					<td>Počáteční počet</td>
+					<td>{{ product.pcs }} ks</td>
+				</tr>
+				<tr>
+					<td>Dostupný počet</td>
+					<td>{{ product.pcs_free }} ks</td>
+				</tr>
+				<tr>
+					<td>Minimální objednávka</td>
+					<td>{{ product.pcs_min }} ks</td>
+				</tr>
+				<tr>
+					<td>Nominální hodnota</td>
+					<td>{{ product.price|number_format(2, ',', '.') }} {{ currencies[product.currency_id].abbreviation }}</td>
+				</tr>
+				<tr>
+					<td>Obdobi prodeje</td>
+					<td>{{ product.sell_from_date }} - {{ product.sell_to_date }}</td>
+				</tr>
+				<tr>
+					<td>Maturita</td>
+					<td>{{ product.maturity_date }}</td>
+				</tr>
+				<tr>
+					<td>Platnost produktu</td>
+					<td>
+						{% if product.valid_type %}
+						{{ product.valid_days }} dní
+						{% else %}
+						{{ product.valid_from_date }} - {{ product.valid_to_date }}
+						{% endif %}
+					</td>
+				</tr>
+			</tbody>
+		</table> #}
+		{#   {% if files %}
+		<table>
+			<thead>
+				<tr>
+					<th>Název</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for file in files %}
+				<tr>
+					<td>
+						<a href="/catalog/product/file/{{ file.id }}">{{ file.name }}</a>
+					</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+		{% endif %} #}
+		{% endblock %}

@@ -1,0 +1,133 @@
+.btn {
+  font-family: $primary-font-family;
+  font-size: $primary-font-size;
+  font-weight: 400;
+  line-height: $primary-line-height;
+  display: inline-block;
+  background: 0 0;
+  border: none;
+  border-radius: 2px;
+  color: $content-color;
+  position: relative;
+  height: 36px;
+  margin: 0;
+  min-width: 64px;
+  padding: 0 16px;
+  text-transform: uppercase;
+  letter-spacing: 0;
+  overflow: hidden;
+  will-change: box-shadow;
+  outline: 0;
+  cursor: pointer;
+  text-decoration: none;
+  text-align: center;
+  vertical-align: middle;
+  @include transition(321ms);
+
+  &:focus {
+    outline: 0;
+	}
+	
+  &:hover {
+    background-color: rgba($grey, .2);
+    color: $content-color
+	}
+
+
+  &.btn-colored {
+    color: #fff;
+    box-shadow: 0 4px 5px 0 rgba(0,0,0,.14), 0 1px 10px 0 rgba(0,0,0,.12), 0 2px 4px -1px rgba(0,0,0,.2);
+    box-shadow: 0 0.25rem 0.3125rem 0 rgba(0,0,0,.14), 0 1px 0.625rem 0 rgba(0,0,0,.12), 0 0.125rem 0.25rem -1px rgba(0,0,0,.2);
+    transition: box-shadow .2s cubic-bezier(.4,0,1,1),background-color .2s cubic-bezier(.4,0,.2,1),color .2s cubic-bezier(.4,0,.2,1);
+
+    .ripple {
+      background-color: rgba(#fff, .4);
+    }
+  }
+
+  &.primary-bg {
+    background-color: $primary-color;
+
+    &:hover {
+      background-color: darken($primary-color, 10%);
+    }
+  }
+
+  &.secondary-bg {
+    background-color: $secondary-color;
+
+    &:hover {
+      background-color: darken($secondary-color, 20%);
+    }
+  }
+
+  &.grey-bg {
+    background-color: rgba($grey, .2);
+
+    &:hover {
+      background-color: rgba($grey, .4);
+    }
+  }
+
+  &.btn-rounded {
+    border-radius: 50%;
+  }
+
+  &.btn-with-icon {
+    display: inline-flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-content: stretch;
+    align-items: center;
+
+    .svg__container {
+      width: 16px;
+      margin-right: 6px;
+    }
+
+  }
+
+  &.btn-hover-reverse {
+    background-color: rgba(128,128,128,.2);
+    color: #1a1a1a;
+
+    &:hover {
+      background-color: transparent;
+    }
+  }
+
+  // Disabled button
+  &[disabled] {
+    cursor: default;
+    pointer-events: none;
+    opacity: .6;
+  }
+
+  &.btn-active {
+    background-color: rgba($grey, .2);
+  }
+}
+.btn-icon {
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  min-width: 36px;
+  text-align: center;
+
+  .svg__container {
+    width: 24px;
+    height: 36px;
+    display: inline-block;
+    vertical-align: top;
+  }
+
+  &.smaller-icon {
+    .svg__container {
+      width: 18px;
+    }
+  }
+}
+a.btn {
+  line-height: 36px;
+}

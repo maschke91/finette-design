@@ -1,0 +1,139 @@
+{% extends 'layout/menu.html.twig' %}
+
+{% import 'macro/form.html.twig' as form %}
+{% import 'macro/common.html.twig' as common %}
+
+{% block content %}
+<section class="page__content bg-white box__shadow">
+	<div class="breadcrumbs__wrap">
+		<span class="breadcrumbs__item">Pozvánky</span>
+	</div>
+	<div class="section">
+		<div class="js-table-wrapper">
+				<table class="table responsive-table">
+					<thead>
+						<th>Typ</th>
+						<th>Autor</th>
+						<th>Datum</th>
+						<th>Uživatel</th>
+						<th>Odesláno</th>
+						<th>Role</th>
+						<th class="text-right">
+							{% if not noprofile %}
+							<a href="/invite/new" class="btn btn-colored primary-bg ">Přidat</a>
+							{% endif %}
+						</th>
+					</thead>
+					<tbody>
+						{% for item in items %}
+						<tr>
+							<td data-label="Typ">
+							<span class="d-inline-block" style="height: 26px;">
+								<span class="user__item item__type-{% if item.user_id %}person{% else %}email{% endif %}" title="{% if item.user_id %}Uživatel{% else %}Pozvánka{% endif %}">
+									<span class="svg__container boolean__icon-svg">
+										<svg class="svg__icon svg__content">
+											<use xlink:href="/assets/img/svg/svg.svg#{% if item.user_id %}person{% else %}email{% endif %}" x="0" y="0" width="100%" height="100%" />
+										</svg>
+									</span>
+								</span>
+							</span>
+								<span style="font-size: 0;">{{ item.user_id ? 'Uživatel' : 'Pozvánka' }}
+							</td>
+							<td data-label="Autor" class="td-long-text"><span class="max__width-250">{{ item.creator_id ? affiliates[item.creator_id].name : 'Provider' }}</span></td>
+							<td data-label="Datum">{{ item.user_timestamp ?? item.timestamp }}</td>
+							<td data-label="Uživatel" class="td-long-text">{{ item.user_email ?? item.email }}</td>
+							<td data-label="Odesláno">{{ item.sent_timestamp ?: '-'  }}</td>
+							<td data-label="Role">
+								{{ item.role_customer or item.role_customer_user ? common.badge('C') }}
+								{{ item.role_affiliate or item.role_affiliate_user ? common.badge('A') }}
+								{{ item.role_emitent or item.role_emitent_user ? common.badge('E') }}
+								{{ item.role_spectator or item.role_spectator_user ? common.badge('S') }}
+								{{ item.role_provider or item.role_provider_user ? common.badge('P') }}
+							</td>
+							<td class="text-right">
+								{% if not item.user_id and (not item.sent_timestamp or date(item.sent_timestamp) <= date("now"|date_modify("-30 minutes"))) %}
+								<a class="js-confirm btn btn-icon btn-rounded smaller-icon" title="Odeslat" href="/invite/send/{{ item.id }}">
+									<span class="svg__container">
+										<svg class="svg__icon svg__content">
+											<use xlink:href="/assets/img/svg/svg.svg#email" x="0" y="0" width="100%" height="100%" />
+										</svg>
+									</span>
+								</a>
+								{% endif %}
+								{% if not item.user_id or role == 4 %}
+								<a href="/invite/edit/{{ item.id }}" title="Upravit" class="btn btn-icon btn-rounded smaller-icon">
+									<span class="svg__container">
+										<svg class="svg__icon svg__content">
+											<use xlink:href="/assets/img/svg/svg.svg#edit" x="0" y="0" width="100%" height="100%" />
+										</svg>
+									</span>
+								</a>
+								{% endif %}
+								{% if not item.user_id %}
+								<a class="js-confirm  btn btn-icon btn-rounded smaller-icon" title="Odstranit" href="/invite/delete/{{ item.id }}">
+									<span class="svg__container">
+										<svg class="svg__icon svg__content">
+											<use xlink:href="/assets/img/svg/svg.svg#close" x="0" y="0" width="100%" height="100%" />
+										</svg>
+									</span>
+								</a>
+								{% endif %}
+							</td>
+						</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
+		{% if noprofile %}
+		<div class="no_items">
+			<p>Pro pokračování si vyplňte alespoň jméno a příjmení v <a href="/profile">Profilu</a>.</p>
+		</div>
+		{% elseif items is empty %}
+		<div class="no_items">
+			<p>Žádné položky k zobrazení.</p>
+		</div>
+		{% endif %}
+	</div>
+</section>
+{# <h1>Pozvánky</h1>
+	<h2>Přehled</h2>
+	<table>
+		<thead>
+			<tr>
+				<th>Vytvořeno</th>
+				<th>E-mail</th>
+				<th>Odesláno</th>
+				<th>Role</th>
+				<th>
+					<a href="/invite/new">Přidat</a>
+				</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for item in items %}
+			<tr>
+				<td>{{ item.timestamp }}</td>
+				<td>{{ item.email }}</td>
+				<td>{{ item.sent_timestamp ?: '-'  }}</td>
+				<td>
+					{{ item.role_customer ? 'C' }}
+					{{ item.role_affiliate ? 'A' }}
+					{{ item.role_emitent ? 'E' }}
+					{{ item.role_spectator ? 'S' }}
+					{{ item.role_provider ? 'P' }}
+				</td>
+				<td>
+					{% if not item.sent_timestamp %}
+					<a class="js-confirm" href="/invite/send/{{ item.id }}">Odeslat</a>
+					{% endif %}
+					<a href="/invite/edit/{{ item.id }}">Upravit</a>
+					<a class="js-confirm" href="/invite/delete/{{ item.id }}">Smazat</a>
+				</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+	{% if items is empty %}
+	<p><i>Žádné položky k zobrazení.</i></p>
+	{% endif %} #}
+	{% endblock %}

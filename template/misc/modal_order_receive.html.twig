@@ -1,0 +1,43 @@
+{% import 'macro/form.html.twig' as form %}
+
+<div class="modal__content-heading">
+	<span class="modal__content-title">Přijetí objednávky</span>
+</div>
+<form action="/order/ajax_receive_save" data-name="order_receive" class="full-width" novalidate>
+	<div class="modal__content-text">
+		{{ form.datepicker('Datum přijetí', 'receive_date', [{
+			'type' : 'empty',
+			'text' : 'Musíte vyplnit datum přijetí'
+		}, {
+			'type' : 'format',
+			'text' : 'Špatný formát data přijetí'
+    }, {
+      'type' : 'valid-min',
+      'text' : 'Datum přijetí je dříve než odeslání'
+    }, {
+      'type' : 'valid-max',
+      'text' : 'Datum přijetí je později než dnes'
+		}]) }}
+	</div>
+	<div class="modal__content-footer">
+		{{ form.hidden('id', id) }}
+		<a href="#" class="btn modal__button--cancel">Zrušit</a>
+		{{ form.submit('Uložit', 'Ukládám...') }}
+	</div>
+</form>
+
+
+{#<h3>Přijetí objednávky</h3>
+<form action="/order/ajax_receive_save" data-name="order_receive" novalidate>
+	{{ form.input('Datum přijetí', 'receive_date', [{
+		'type' : 'empty',
+		'text' : 'Musíte vyplnit datum přijetí'
+	}, {
+		'type' : 'format',
+		'text' : 'Špatný formát data přijetí'
+	}]) }}
+	<br />
+	{{ form.hidden('id', id) }}
+	{{ form.submit('Uložit', 'Ukládám...') }}
+	<a href="#" class="modal__button--cancel">Zrušit</a>
+</form>#}
